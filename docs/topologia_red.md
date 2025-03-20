@@ -13,13 +13,13 @@
 
 3. **Flujo de trabajo:**
 - Monitoreo del tráfico (VM1):
-- Suricata en la VM1 captura el tráfico entre las máquinas y lo analiza en tiempo real.
+	Suricata en la VM1 captura el tráfico entre las máquinas y lo analiza en tiempo real.
 
 - Generación de tráfico (VM3):
-- La VM3 (Cliente B) realiza ataques (escaneos de puertos, DoS, etc.) que deben ser detectados por Suricata en VM1.
+	La VM3 (Cliente B) realiza ataques (escaneos de puertos, DoS, etc.) que deben ser detectados por Suricata en VM1.
 
 - Detección de ataques (VM1):
-- Suricata genera alertas si detecta tráfico sospechoso. Por ejemplo, si la VM3 intenta hacer un escaneo de puertos en la VM2, Suricata debería detectar esta actividad y generar una alerta.
+	Suricata genera alertas si detecta tráfico sospechoso. Por ejemplo, si la VM3 intenta hacer un escaneo de puertos en la VM2, Suricata debería detectar esta actividad y generar una alerta.
 
 - Análisis de tráfico y alertas (VM4):
-- Wireshark en la VM4 permite analizar las capturas de tráfico y revisar las alertas generadas por Suricata. Si usas Kibana/Elasticsearch, se pueden almacenar logs de eventos y analizarlos más tarde para generar dashboards que muestren tendencias de tráfico malicioso a lo largo del tiempo.
+	Wireshark en la VM4 permite analizar las capturas de tráfico y revisar las alertas generadas por Suricata. Si usas Kibana/Elasticsearch, se pueden almacenar logs de eventos y analizarlos más tarde para generar dashboards que muestren tendencias de tráfico malicioso a lo largo del tiempo.
