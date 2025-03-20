@@ -24,21 +24,10 @@ El IDS buscará patrones de tráfico malicioso como **escaneos de puertos**, **i
     - Utilizar herramientas como **Wireshark**, **Suricata** o **tcpdump** para capturar y analizar el tráfico de la red.
     - Filtrar el tráfico para identificar patrones sospechosos, como picos inusuales en el tráfico, paquetes anómalos o intentos de acceso a puertos no autorizados.
     
-- **Desarrollo de Algoritmos de Machine Learning**:
-    
-    - Utilizar un conjunto de datos histórico de tráfico de red para entrenar un modelo de machine learning que identifique patrones sospechosos (por ejemplo, **Random Forest**, **K-means** o **Redes Neuronales**).
-    - Implementar un sistema que aprenda a diferenciar entre tráfico legítimo y tráfico potencialmente malicioso.
-    
 - **Integración del IDS con Herramientas de Monitoreo**:
     
     - Integrar el sistema IDS con herramientas como **Grafana** o **Kibana** para visualizar en tiempo real el tráfico de red y las alertas de seguridad.
     - Configurar **alertas automáticas** (por ejemplo, mediante correo electrónico o sistemas como **Slack**) cuando se detecte tráfico sospechoso.
-    
-- **Desarrollo del Sistema de Alertas y Reportes**:
-    
-    - **Desarrollo del sistema de alertas**: El sistema de alertas permitirá notificar a los administradores en tiempo real sobre eventos de seguridad sospechosos detectados en el tráfico de red. Las alertas se configurarán para ser enviadas mediante **correo electrónico** o a plataformas de mensajería como **Slack**, dependiendo de la configuración del sistema de la organización.
-    - **Integración con herramientas de monitoreo**: Se planea integrar el sistema de alertas con plataformas de monitoreo avanzadas, como **SIEM** (Security Information and Event Management) o **SOAR** (Security Orchestration, Automation, and Response), que permitirán una gestión eficiente de las alertas y la orquestación de respuestas automáticas ante incidentes. Esto permitirá correlacionar eventos de seguridad con otros logs y realizar acciones automatizadas, como bloquear direcciones IP sospechosas o aislar segmentos de red comprometidos.
-    - Además, se incluirá la generación de **informes detallados** sobre los posibles ataques detectados, con recomendaciones de mitigación y análisis de impacto.
     
 - **Análisis de Amenazas y Generación de Reportes**:
     
