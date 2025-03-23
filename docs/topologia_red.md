@@ -2,10 +2,10 @@
 
 1. **Máquinas Virtuales (VMs):**
 
-- **VM 1 (Servidor/IDS)**: En esta máquina instalarás **Suricata** (el IDS) para analizar el tráfico y generar alertas.
-- **VM 2 (Cliente A - Vulnerable)**: Esta máquina simula un cliente vulnerable que puede ser atacado o generar tráfico malicioso.
-- **VM 3 (Cliente B - Sospechoso)**: Este cliente simula un comportamiento sospechoso, como un botnet o malware.
-- **VM 4 (Máquina de Análisis)**: Esta máquina analizará el trafico con **Wireshark** para visualizar los datos y con Kibana/Elasticsearch podrá almacenar logs de eventos y visualizarlos a largo plazo, generando gráficos y dashboards para detectar patrones más complejos..
+- **VM 1 (Servidor/IDS - Ubuntu server)**: En esta máquina instalarás **Suricata** (el IDS) para analizar el tráfico y generar alertas.
+- **VM 2 (Cliente A - Vulnerable - Debian)**: Esta máquina simula un cliente vulnerable que puede ser atacado o generar tráfico malicioso.
+- **VM 3 (Cliente B - Sospechoso - Kali linux)**: Este cliente simula un comportamiento sospechoso, como un botnet o malware.
+- **VM 4 (Máquina de Análisis - Debian)**: Esta máquina analizará el trafico con **Wireshark** para visualizar los datos y con Kibana/Elasticsearch podrá almacenar logs de eventos y visualizarlos a largo plazo, generando gráficos y dashboards para detectar patrones más complejos..
 
 2. **Red Interna Aislada:**
 
