@@ -21,7 +21,7 @@ El IDS buscará patrones de tráfico malicioso como **escaneos de puertos**, **i
 
 - **Implementación de Análisis de Tráfico de Red**:
     
-    - Utilizar herramientas como **Wireshark**, **Suricata** o **tcpdump** para capturar y analizar el tráfico de la red.
+    - Utilizar herramientas como **Suricata** para capturar y analizar el tráfico de la red.
     - Filtrar el tráfico para identificar patrones sospechosos, como picos inusuales en el tráfico, paquetes anómalos o intentos de acceso a puertos no autorizados.
     
 - **Integración del IDS con Herramientas de Monitoreo**:
