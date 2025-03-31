@@ -26,8 +26,8 @@ El IDS buscará patrones de tráfico malicioso como **escaneos de puertos**, **i
     
 - **Integración del IDS con Herramientas de Monitoreo**:
     
-    - Integrar el sistema IDS con herramientas como **Grafana** o **Kibana** para visualizar en tiempo real el tráfico de red y las alertas de seguridad.
-    - Configurar **alertas automáticas** (por ejemplo, mediante correo electrónico o sistemas como **Slack**) cuando se detecte tráfico sospechoso.
+    - Integrar el sistema IDS con herramientas como **Kibana** para visualizar en tiempo real el tráfico de red y las alertas de seguridad.
+    - Configurar **alertas automáticas** (por ejemplo, mediante correo electrónico) cuando se detecte tráfico sospechoso.
     
 - **Análisis de Amenazas y Generación de Reportes**:
     
@@ -45,29 +45,26 @@ El IDS buscará patrones de tráfico malicioso como **escaneos de puertos**, **i
 
 **Medios físicos (hardware):**
 
-- **Máquina o servidor** para instalar las herramientas de captura y análisis de tráfico (puede ser una máquina virtual o servidor físico).
-- **Red interna** que permita realizar las pruebas de tráfico, como una red LAN controlada. Si no se dispone de una red de pruebas, se puede crear una red virtualizada utilizando **máquinas virtuales**.
+- **Máquina o servidor** para instalar las herramientas de captura y análisis de tráfic.
+- **Red interna** que permita realizar las pruebas de tráfico, como una red LAN virtualizada utilizando **máquinas virtuales**.
 
 **Medios lógicos (software):**
 
-- **Wireshark** o **Suricata**: Herramientas de análisis de tráfico de red que capturan y examinan paquetes de red.
-- **Python**: Para desarrollar scripts de machine learning y procesar los datos de tráfico de red.
-- **Librerías de machine learning en Python**: **Scikit-learn** o **TensorFlow** para crear y entrenar modelos predictivos sobre tráfico de red.
-- **Grafana/Kibana**: Herramientas de visualización para crear dashboards de tráfico y alertas.
-- **Base de datos**: Para almacenar eventos y generar reportes. Puede usarse **Elasticsearch** si se usa Kibana.
-- **Sistemas de alertas**: Como **Slack** o un servidor de **correo electrónico** para generar alertas automáticas.
+- **Wireshark** y **Suricata**: Herramientas de análisis de tráfico de red que capturan y examinan paquetes de red.
+- **Kibana**: Herramientas de visualización para crear dashboards de tráfico y alertas.
+- **Base de datos**: Para almacenar eventos y generar reportes. Puede usarse **Elasticsearch**.
+- **Sistemas de alertas**: Como un servidor de **correo electrónico** para generar alertas automáticas.
 ---
 
 ### **Planificación:**
 
 | **Tarea**                                              | **Descripción**                                                                                             | **Duración estimada** |
 | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | --------------------- |
-| **Investigación sobre IDS y herramientas de análisis** | Investigación de las mejores herramientas y tecnologías (Wireshark, Suricata, machine learning).            | 1 semana              |
+| **Investigación sobre IDS y herramientas de análisis** | Investigación de las mejores herramientas y tecnologías (Wireshark, Suricata, nmap, hping3, metasploit).    | 2 semana              |
 | **Captura y análisis de tráfico de red**               | Configuración de herramientas para capturar tráfico y analizar paquetes de red.                             | 2 semana              |
-| **Desarrollo del modelo de machine learning**          | Preparación de los datos y desarrollo de los algoritmos de machine learning.                                | 3 semanas             |
-| **Integración con herramientas de monitoreo**          | Configuración de Grafana o Kibana para la visualización de tráfico y alertas.                               | 3 semana              |
-| **Generación de alertas y reportes**                   | Implementación de un sistema de alertas automáticas y generación de informes sobre las amenazas detectadas. | 1 semana              |
-| **Pruebas y ajustes**                                  | Realización de pruebas en diferentes condiciones de red y ajuste de los algoritmos.                         | 1 semana              |
+| **Integración con herramientas de monitoreo**          | Configuración de Kibana para la visualización de tráfico y alertas.                                         | 3 semana              |
+| **Generación de alertas y reportes**                   | Implementación de un sistema de alertas automáticas y generación de informes sobre las amenazas detectadas. | 2 semana              |
+| **Pruebas y ajustes**                                  | Realización de pruebas en diferentes condiciones.                                                           | 2 semana              |
 | **Documentación del proyecto**                         | Creación de la documentación técnica y manual de usuario.                                                   | 1 semana              |
 
 **Duración total estimada**: 12 semanas.
