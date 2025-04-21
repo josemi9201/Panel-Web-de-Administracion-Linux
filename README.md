@@ -1,96 +1,71 @@
 
-# IDS-TFG
-## Sistema de Detección de Intrusiones (IDS) - TFG ASIR
-Este proyecto tiene como objetivo desarrollar un IDS para monitorear y proteger redes internas
+# Aws-Monitoring-TFG
 
-### **Introducción:**
+### **1\. Introducción**
 
-El proyecto tiene como objetivo el desarrollo de un **Sistema de Detección de Intrusiones (IDS)** para monitorear y proteger la red interna de una organización. El IDS analizará el tráfico de red entrante y saliente buscando patrones de tráfico anómalos que puedan indicar posibles ataques, como intrusiones, intentos de acceso no autorizado, ataques de denegación de servicio (DoS), o malware. Utilizando herramientas de análisis de tráfico como **Wireshark** o **Suricata** y técnicas de **machine learning**, el sistema será capaz de identificar comportamientos sospechosos en tiempo real y generar alertas cuando se detecte una posible intrusión.
+En este proyecto se va a diseñar e implementar una infraestructura en la nube utilizando Amazon Web Services (AWS), con el objetivo de establecer un sistema de monitorización centralizado mediante **Zabbix** y su visualización avanzada a través de **Grafana**.
 
----
+El proyecto consistirá en la creación de una **infraestructura virtual** compuesta por varias instancias EC2 alojadas en una **VPC personalizada**. Una de estas instancias actuará como servidor de monitorización, donde se instalará Zabbix Server y Grafana. Las demás serán monitorizadas mediante Zabbix Agent. Este tipo de configuración es habitual en entornos de producción donde se requiere supervisar el estado, rendimiento y disponibilidad de servicios críticos.
 
-### **Finalidad:**
-
-La finalidad de este proyecto es mejorar la **seguridad de la red** de una organización mediante un sistema automatizado que pueda identificar y alertar de posibles amenazas en tiempo real. Esto ayudará a los administradores de red a reaccionar rápidamente ante incidentes, minimizando el riesgo de una brecha de seguridad. Además, permitirá mejorar la visibilidad de los posibles ataques que podrían pasar desapercibidos en una red sin monitoreo.
-
-El IDS buscará patrones de tráfico malicioso como **escaneos de puertos**, **infecciones de malware**, y **comportamientos de botnets**. Además, se proporcionará un sistema de alertas que notifique a los administradores sobre eventos de seguridad críticos.
+A través de este proyecto se aprenderá a configurar de forma segura una infraestructura cloud básica, a desplegar herramientas de monitorización y a visualizar métricas en tiempo real. Todo ello cumpliendo con los principios de administración de sistemas y redes.
 
 ---
 
-### **Objetivos:**
+### **2\. Finalidad**
 
-- **Implementación de Análisis de Tráfico de Red**:
-    
-    - Utilizar herramientas como **Suricata** para capturar y analizar el tráfico de la red.
-    - Filtrar el tráfico para identificar patrones sospechosos, como picos inusuales en el tráfico, paquetes anómalos o intentos de acceso a puertos no autorizados.
-    
-- **Integración del IDS con Herramientas de Monitoreo**:
-    
-    - Integrar el sistema IDS con herramientas como **Kibana** para visualizar en tiempo real el tráfico de red y las alertas de seguridad.
-    - Configurar **alertas automáticas** (por ejemplo, mediante correo electrónico) cuando se detecte tráfico sospechoso.
-    
-- **Análisis de Amenazas y Generación de Reportes**:
-    
-    - Realizar un análisis profundo del tráfico de red y los incidentes de seguridad detectados, generando informes detallados sobre los posibles ataques y vulnerabilidades en la red.
-    - Implementar un sistema para almacenar y gestionar los informes de eventos de seguridad, para su posterior análisis y mejora de la red.
+La finalidad del proyecto es ofrecer una solución práctica y funcional para monitorizar el estado de una infraestructura IT en la nube, que permita:
 
-- **Documentación del Proyecto**:
-    
-    - Crear documentación detallada del sistema, explicando su arquitectura, configuración y cómo utilizar las herramientas implementadas.
-    - Desarrollar un manual de uso para los administradores de red y cómo responder ante una alerta de seguridad generada por el IDS.
+- Supervisar múltiples servidores desde un único punto de control.
+- Visualizar el estado de los sistemas en tiempo real con paneles gráficos atractivos.
+- Detectar fallos o comportamientos anómalos de forma anticipada.
+- Establecer alertas automáticas para mejorar la respuesta ante incidencias.
+
+Esta solución puede ser utilizada tanto por administradores de sistemas en entornos corporativos, como por pequeñas empresas o estudiantes que deseen aprender a gestionar infraestructuras distribuidas.
 
 ---
 
-### **Medios necesarios:**
+### **3\. Objetivos**
 
-**Medios físicos (hardware):**
+- Crear una **VPC personalizada** con una subred pública para alojar las instancias virtuales.
+- Desplegar un **servidor EC2** con **Zabbix Server** y **Grafana** correctamente configurados.
+- Instalar y configurar **Zabbix Agent** en otras instancias EC2.
+- Asegurar la **comunicación segura entre instancias**, utilizando **grupos de seguridad personalizados**.
+- Integrar **Grafana con Zabbix** para representar visualmente los datos monitorizados.
+- Configurar **dashboards personalizados** en Grafana con métricas como CPU, memoria, disco o red.
+- Establecer **alertas automáticas** desde Zabbix.
+- Documentar el proceso de instalación, configuración y puesta en marcha.
 
-- **Máquina o servidor** para instalar las herramientas de captura y análisis de tráfic.
-- **Red interna** que permita realizar las pruebas de tráfico, como una red LAN virtualizada utilizando **máquinas virtuales**.
-
-**Medios lógicos (software):**
-
-- **Wireshark** y **Suricata**: Herramientas de análisis de tráfico de red que capturan y examinan paquetes de red.
-- **Kibana**: Herramientas de visualización para crear dashboards de tráfico y alertas.
-- **Base de datos**: Para almacenar eventos y generar reportes. Puede usarse **Elasticsearch**.
-- **Sistemas de alertas**: Como un servidor de **correo electrónico** para generar alertas automáticas.
 ---
 
-### **Planificación:**
+### **4\. Medios necesarios**
 
-| **Tarea**                                              | **Descripción**                                                                                             | **Duración estimada** |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | --------------------- |
-| **Investigación sobre IDS y herramientas de análisis** | Investigación de las mejores herramientas y tecnologías (Wireshark, Suricata, nmap, hping3, metasploit).    | 2 semana              |
-| **Captura y análisis de tráfico de red**               | Configuración de herramientas para capturar tráfico y analizar paquetes de red.                             | 2 semana              |
-| **Integración con herramientas de monitoreo**          | Configuración de Kibana para la visualización de tráfico y alertas.                                         | 3 semana              |
-| **Generación de alertas y reportes**                   | Implementación de un sistema de alertas automáticas y generación de informes sobre las amenazas detectadas. | 2 semana              |
-| **Pruebas y ajustes**                                  | Realización de pruebas en diferentes condiciones.                                                           | 2 semana              |
-| **Documentación del proyecto**                         | Creación de la documentación técnica y manual de usuario.                                                   | 1 semana              |
+#### **Medios físicos (Hardware)**:
 
-**Duración total estimada**: 12 semanas.
+- Un ordenador personal con conexión a internet.
+- Cuenta activa en AWS con acceso al panel de gestión de EC2 y VPC.
 
+#### **Medios lógicos (Software)**:
 
+- AWS EC2, VPC y grupos de seguridad.
+- Zabbix Server y Zabbix Agent.
+- Grafana (última versión estable).
+- Sistema operativo Ubuntu Server (en las instancias EC2).
+- Cliente SSH (como PuTTY o terminal de Linux).
+- Navegador web para acceder a interfaces web de Zabbix y Grafana.
 
+---
 
+### **5\. Planificación**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Estructura del proyecto
-- `/src` → Código fuente
-- `/docs` → Documentación del sistema
-- `/datos` → Conjuntos de datos de tráfico de red
-- `/config` → Archivos de configuración
-- `/tests` → Tests unitarios y de integración
+| **Fase** | **Duración estimada** | **Descripción** |
+| --- | --- | --- |
+| Diseño de la arquitectura | 3 días | Crear el diagrama, definir la red y componentes. |
+| Creación de la VPC y subred | 2 días | Configurar VPC, subred pública y rutas. |
+| Despliegue de instancias EC2 | 2 días | Lanzar instancias necesarias desde la consola de AWS. |
+| Instalación de Zabbix Server | 3 días | Instalar base de datos, Zabbix y configurar el servidor. |
+| Instalación de Zabbix Agents | 2 días | Configurar monitorización de otras instancias. |
+| Instalación e integración de Grafana | 3 días | Instalar Grafana y conectarlo a Zabbix. |
+| Configuración de dashboards | 2 días | Crear paneles visuales con métricas útiles. |
+| Configuración de alertas | 2 días | Crear reglas de notificación ante fallos o eventos. |
+| Pruebas y validaciones | 3 días | Verificar funcionamiento completo del sistema. |
+| Documentación y conclusiones | 5 días | Redactar el informe del proyecto. |
