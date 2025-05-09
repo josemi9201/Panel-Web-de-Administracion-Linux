@@ -1,80 +1,71 @@
-# Despliegue de un servidor web seguro con panel de administración remota y sistema de alertas ante incidentes
+## 📝 ANTEPROYECTO – Panel Web de Administración Linux Multiusuario y Multiservidor
 
-## 🧾 GUIÓN DEL PROYECTO
+### 📌 **Introducción**
 
-### 📌 **1. Introducción**
-
-En este proyecto se desarrolla una solución práctica para la administración y monitorización de un servidor Linux a través de una interfaz web. Se implementa un panel de control accesible por navegador desde el que se pueden ejecutar tareas comunes de mantenimiento, visualizar el estado del sistema y activar scripts predefinidos. Además, se configura un sistema básico de alertas que notifica posibles accesos indebidos o intentos de ataque, permitiendo al administrador actuar rápidamente. Todo el sistema se despliega en un entorno real mediante un servidor virtual en la nube.
+En entornos profesionales, administrar uno o varios servidores Linux requiere experiencia técnica y acceso por terminal. Esta dependencia puede generar errores o limitar el control por parte de ciertos perfiles. Con este proyecto se pretende desarrollar un **panel web seguro y accesible** que permita **gestionar tanto el servidor local como otros servidores Linux remotos** mediante tareas automatizadas y controladas por permisos de usuario.
 
 ---
 
-### 🎯 **2. Finalidad**
+### 🎯 **Finalidad**
 
-El objetivo general del proyecto es ofrecer una herramienta sencilla y eficaz para la gestión remota de servidores Linux, especialmente útil en entornos educativos, domésticos o pequeñas empresas. El proyecto también permite mostrar en tiempo real cómo se pueden detectar accesos no autorizados y responder ante ellos, sirviendo como práctica integradora de seguridad, administración de sistemas y desarrollo web.
-
----
-
-### 🛠️ **3. Objetivos técnicos**
-
-- Desplegar un servidor Linux con servicios básicos (Apache, PHP).
-    
-- Desarrollar un panel de administración web funcional con autenticación.
-    
-- Ejecutar desde la web scripts de mantenimiento como backups o visualización de estado del sistema.
-    
-- Configurar el sistema para generar alertas ante ciertos eventos (fallos de login, escaneos, etc.).
-    
-- Simular ataques desde una máquina Kali Linux y analizar su impacto.
-    
-- Documentar el entorno, pruebas y resultados obtenidos.
-
+Proporcionar un sistema centralizado desde el que distintos usuarios, con diferentes permisos, puedan administrar uno o más servidores Linux. El sistema permitirá ejecutar tareas administrativas de mantenimiento, supervisión y seguridad sin necesidad de acceso directo por terminal.
 
 ---
 
-### 💻 **4. Medios necesarios**
+### 🎯 **Objetivos**
 
-#### a) Hardware:
+#### Objetivo General:
 
-- 1 ordenador doméstico con Linux o Windows para pruebas locales.
-    
-- 1 PC antiguo o portátil usado como servidor local opcional.
-    
-- Cuenta en DigitalOcean (con 200$ de crédito), para crear al menos:
-    
-    - 1 Droplet con Ubuntu Server (servidor web y panel).
-        
-    - 1 Droplet adicional para pruebas o simulación de ataques (opcional).
-        
-    - 1 Máquina virtual local o en Kali Linux para realizar escaneos o ataques simulados.
-        
+Desarrollar un **panel web interactivo y seguro** que permita a usuarios autenticados ejecutar tareas administrativas sobre el servidor local y otros servidores remotos.
 
-#### b) Software:
+#### Objetivos Específicos:
 
-- Ubuntu Server 22.04 LTS.
-    
-- Apache2, PHP y herramientas CLI de Linux.
-    
-- Bash para scripting.
-    
-- PHP para el desarrollo del panel web.
-    
-- `fail2ban` o herramientas para bloquear accesos no autorizados.
-    
-- `mailutils` o Telegram para envío de alertas (opcional).
-    
-- Kali Linux para pruebas de ataque (nmap, nikto, sqlmap, etc.).
-
+- Implementar login con contraseña cifrada y roles personalizados.
+- Controlar permisos por usuario para limitar o permitir acciones específicas.
+- Conectar con otros servidores para ejecutar comandos remotos o lanzar scripts a través de `Ansible` o `SSH`.
+- Permitir al administrador:
+	- Gestionar usuarios del panel (crear, borrar, cambiar contraseña).
+	- Asignar permisos dinámicamente mediante checkboxes.
+- Funcionalidades principales del panel:
+	- Gestión de backups.
+	- Visualización de CPU/RAM/Disco con gráficos en tiempo real.
+	- Supervisión de procesos activos y posibilidad de finalizar procesos.
+	- Verificación de logs del sistema y Apache.
+	- Diagnóstico de red y revisión de conexiones activas.
+	- Gestión de reglas del firewall UFW.
+	- Visualización y edición de tareas programadas (cron).
+	- Administración de servicios básicos (Apache, SSH, MySQL, etc.).
+	- Ejecución remota de tareas sobre otros servidores registrados.
 
 ---
 
-### 🗓️ **5. Planificación del proyecto**
+### 🧰 **Medios necesarios**
 
-| Semana | Tarea a realizar                                                            |
-| ------ | --------------------------------------------------------------------------- |
-| 1      | Preparación del entorno: creación de droplet, instalación de servicios base |
-| 2      | Desarrollo del panel web básico con interfaz PHP                            |
-| 3      | Integración de scripts del sistema (backup, logs, estado del servidor)      |
-| 4      | Configuración de alertas y notificaciones (vía log o email)                 |
-| 5      | Simulación de ataques desde Kali y análisis de los eventos detectados       |
-| 6      | Documentación, capturas, pruebas finales y redacción de la memoria          |
-| 7      | Presentación y revisión del proyecto final                                  |
+- **Servidor principal Linux** con Apache2, PHP y permisos `sudo`
+- **Servidores remotos** conectables por SSH o controlables por Ansible
+- **PHP 7+**, HTML5, CSS3 (estilo unificado con `style.css`)
+- **Chart.js** para gráficos dinámicos
+- **Bot de Telegram** para alertas de login
+- **Scripts Bash personalizados** para tareas como backups, verificación de integridad o limpieza del sistema
+- **Archivos `usuarios.php` y `permisos.php`** para gestión dinámica desde el panel
+
+---
+
+### 🗓️ **Planificación (70 horas estimadas)**
+
+| Fase | Actividad | Horas |
+| --- | --- | --- |
+| 1 | Diseño inicial del panel y autenticación con login (admin) | 6h |
+| 2 | Estructura modular del panel, separación por secciones | 6h |
+| 3 | Implementación de backups (crear, listar, eliminar, descargar) | 5h |
+| 4 | Monitorización del sistema con gráficos: CPU, RAM, disco | 6h |
+| 5 | Gestión de procesos y tareas crontab | 5h |
+| 6 | Diagnóstico de red, conexiones activas, intentos fallidos | 5h |
+| 7 | Gestión de firewall UFW (ver estado, añadir/quitar reglas) | 4h |
+| 8 | Administración de usuarios del panel (crear, borrar, cambiar contraseña) | 5h |
+| 9 | Sistema de permisos dinámicos con checkboxes y `permisos.php` | 5h |
+| 10 | Integración de ejecución remota en servidores externos (vía SSH/Ansible) | 7h |
+| 11 | Estética y estilo del panel (CSS, estructura, navegación) | 3h |
+| 12 | Pruebas, correcciones, documentación interna y comentarios | 3h |
+
+**Total estimado: 70 horas**
