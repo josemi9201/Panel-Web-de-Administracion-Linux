@@ -1,84 +1,169 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    margin: 0;
-    padding: 20px;
+  font-family: 'Inter', sans-serif;
+  background: #121212;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 20px;
 }
 
 h2 {
-    color: #333;
+  color: #bb86fc;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-h3, h4 {
-    background-color: #e0e0e0;
-    padding: 8px 12px;
-    border-left: 5px solid #1976d2;
-    color: #222;
-    margin-top: 30px;
+.accordion {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  border-radius: 10px;
+  background: #1f1f1f;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+  padding: 0 15px 15px 15px;
 }
 
-form {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.accordion-button {
+  width: 100%;
+  background-color: #3700b3;
+  border: none;
+  color: #e0e0e0;
+  cursor: pointer;
+  padding: 18px 25px;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 10px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+.accordion-button:hover,
+.accordion-button[aria-expanded="true"] {
+  background-color: #6200ee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
 }
 
-input[type="text"],
-input[type="password"],
-input[type="number"],
-select {
-    padding: 6px;
-    margin: 5px 0;
-    width: 250px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.accordion-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+.accordion-button[aria-expanded="true"] .accordion-icon {
+  transform: rotate(90deg);
 }
 
-button {
-    padding: 8px 14px;
-    background-color: #1976d2;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px 0;
+.accordion-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  background: #292929;
+  padding: 0 30px;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 15px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+  color: #ddd;
+}
+.accordion-content.show {
+  max-height: 1000px;
+  padding: 20px 30px;
 }
 
-button:hover {
-    background-color: #1565c0;
+form button {
+  margin: 6px 10px 6px 0;
+  background-color: #bb86fc;
+  border: none;
+  color: #121212;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+form button:hover {
+  background-color: #985eff;
 }
 
+input, select {
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #555;
+  margin: 6px 6px 12px 0;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+input:focus, select:focus {
+  border-color: #bb86fc;
+  outline: none;
+  box-shadow: 0 0 6px #bb86fcaa;
+}
+
+label {
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+/* Mensajes */
 pre {
-    background-color: #1e1e1e;
-    color: #dcdcdc;
-    padding: 15px;
-    border-radius: 5px;
-    overflow-x: auto;
-    font-size: 0.9em;
+  background: #121212;
+  border: 1px solid #bb86fc;
+  border-radius: 8px;
+  padding: 15px;
+  color: #eee;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.login-container {
-    max-width: 400px;
-    margin: 100px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
+/* Estilos específicos para inputs numéricos y formularios especiales */
+input[type="number"] {
+  max-width: 120px;
 }
 
-.login-container h2 {
-    margin-bottom: 20px;
+/* Scrollbar personalizado (Firefox y Webkit) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #292929;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #bb86fc;
+  border-radius: 10px;
 }
 
-.login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 100%;
-    margin-bottom: 12px;
+/* Enlaces */
+a {
+  color: #bb86fc;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
 
-.login-container button {
-    width: 100%;
+/* Mensajes de confirmación para botones de acciones peligrosas */
+form button[onclick*="confirm"] {
+  background-color: #cf6679;
+  color: #121212;
+}
+form button[onclick*="confirm"]:hover {
+  background-color: #b00020;
+}
+
+/* Ajuste para contenedores de forms dentro de acordeones */
+.accordion-content form {
+  margin-bottom: 10px;
 }

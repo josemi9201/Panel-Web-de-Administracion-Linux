@@ -22,26 +22,29 @@ if (isset($_POST['login'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <title>Acceso al Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/login-style.css" />
 </head>
 <body>
+    <div class="login-container" role="main" aria-label="Formulario de acceso">
+        <h2>Acceso al Panel</h2>
+        <?php if (isset($error)): ?>
+            <p class="error-msg" role="alert"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <form method="POST" novalidate>
+            <label for="user">Usuario</label>
+            <input id="user" type="text" name="user" placeholder="Usuario" required autofocus autocomplete="username" />
 
-<div class="login-container">
-    <h2>Acceso al Panel</h2>
-    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
-    <form method="POST">
-        <input type="text" name="user" placeholder="Usuario" required>
-        <input type="password" name="pass" placeholder="Contraseña" required>
-        <button type="submit" name="login">Entrar</button>
-    </form>
-</div>
+            <label for="pass">Contraseña</label>
+            <input id="pass" type="password" name="pass" placeholder="Contraseña" required autocomplete="current-password" />
 
+            <button type="submit" name="login">Entrar</button>
+        </form>
+    </div>
 </body>
 </html>

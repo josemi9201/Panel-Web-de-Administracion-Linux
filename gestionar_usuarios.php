@@ -1,22 +1,13 @@
-[200~<?php
+<?php
 include_once 'inc/auth.php';
-if ($_SESSION['usuario'] !== 'admin') {
-    exit("❌ Solo el usuario admin puede gestionar usuarios del panel.");
+include_once 'inc/usuarios.php';
+include_once 'inc/roles.php';
+
+if ($_SESSION['rol'] !== 'admin') {
+    exit("❌ Solo el rol admin puede gestionar usuarios del panel.");
 }
 
 $archivo_usuarios = 'inc/usuarios.php';
-$archivo_permisos = 'inc/permisos.php';
-
-include_once $archivo_usuarios;
-include_once $archivo_permisos;
-
-// Definir permisos por rol
-$permisos_por_rol = [
-    "admin" => ["*"],
-    "backup" => ["hacer_backup", "listar_backups", "eliminar_backups", "eliminar_todos_los_backups", "descargar_backup"],
-    "sistema" => ["uso_sistema", "ver_procesos", "ver_conexiones", "ver_logs", "ver_logs_apache", "ver_uptime", "usuarios_conectados"]
-];
-
 $usuarios = $usuarios_validos;
 
 // Añadir usuario
@@ -26,18 +17,15 @@ if (isset($_POST['nuevo_usuario'], $_POST['nueva_contra'], $_POST['nuevo_rol']))
     $rol = $_POST['nuevo_rol'];
 
     if (!isset($usuarios[$nuevo])) {
-        $usuarios[$nuevo] = [
-            'hash' => password_hash($contra, PASSWORD_DEFAULT),
-            'rol' => $rol
-        ];
-
-        // Asignar permisos según el rol
-        $permisos[$nuevo] = $permisos_por_rol[$rol] ?? [];
-
-        // Guardar archivo de permisos
-        file_put_contents($archivo_permisos, "<?php\n\$permisos = " . var_export($permisos, true) . ";\n");
-
-        $mensaje = "✅ Usuario '$nuevo' añadido con rol '$rol' y permisos por defecto.";
+        if (!isset($roles[$rol])) {
+            $mensaje = "❌ El rol '$rol' no existe.";
+        } else {
+            $usuarios[$nuevo] = [
+                'hash' => password_hash($contra, PASSWORD_DEFAULT),
+                'rol' => $rol
+            ];
+            $mensaje = "✅ Usuario '$nuevo' creado con rol '$rol'.";
+        }
     } else {
         $mensaje = "⚠️ El usuario ya existe.";
     }
@@ -47,10 +35,6 @@ if (isset($_POST['nuevo_usuario'], $_POST['nueva_contra'], $_POST['nuevo_rol']))
 if (isset($_POST['borrar_usuario']) && $_POST['borrar_usuario'] !== 'admin') {
     $borrar = $_POST['borrar_usuario'];
     unset($usuarios[$borrar]);
-    unset($permisos[$borrar]);
-
-    file_put_contents($archivo_permisos, "<?php\n\$permisos = " . var_export($permisos, true) . ";\n");
-
     $mensaje = "🗑️ Usuario '$borrar' eliminado.";
 }
 
@@ -85,9 +69,9 @@ file_put_contents($archivo_usuarios, $exportar);
     <input type="text" name="nuevo_usuario" placeholder="Usuario" required>
     <input type="password" name="nueva_contra" placeholder="Contraseña" required>
     <select name="nuevo_rol" required>
-        <option value="admin">admin</option>
-        <option value="backup">backup</option>
-        <option value="sistema">sistema</option>
+        <?php foreach ($roles as $rol => $acciones): ?>
+            <option value="<?= htmlspecialchars($rol) ?>"><?= htmlspecialchars($rol) ?></option>
+        <?php endforeach; ?>
     </select>
     <button type="submit">Crear usuario</button>
 </form>
