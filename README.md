@@ -1,4 +1,4 @@
-## 📝 ANTEPROYECTO – Panel Web de Administración Linux Multiusuario y Multiservidor
+## 📝 ANTEPROYECTO – Panel Web de Administración Linux Multiusuario 
 
 ### 📌 **Introducción**
 
@@ -22,7 +22,6 @@ Desarrollar un **panel web interactivo y seguro** que permita a usuarios autenti
 
 - Implementar login con contraseña cifrada y roles personalizados.
 - Controlar permisos por usuario para limitar o permitir acciones específicas.
-- Conectar con otros servidores para ejecutar comandos remotos o lanzar scripts a través de `Ansible` o `SSH`.
 - Permitir al administrador:
 	- Gestionar usuarios del panel (crear, borrar, cambiar contraseña).
 	- Asignar permisos dinámicamente mediante checkboxes.
@@ -42,7 +41,6 @@ Desarrollar un **panel web interactivo y seguro** que permita a usuarios autenti
 ### 🧰 **Medios necesarios**
 
 - **Servidor principal Linux** con Apache2, PHP y permisos `sudo`
-- **Servidores remotos** conectables por SSH o controlables por Ansible
 - **PHP 7+**, HTML5, CSS3 (estilo unificado con `style.css`)
 - **Chart.js** para gráficos dinámicos
 - **Bot de Telegram** para alertas de login
