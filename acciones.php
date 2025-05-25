@@ -1,43 +1,183 @@
 <?php
-include_once 'inc/auth.php';
-include_once 'inc/roles.php';  // Aquí está definida la función tiene_permiso()
+// Activar reporte de errores para depuración (solo desarrollo)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-function ejecutar($comando) {
+session_start();
+include_once 'inc/auth.php';
+include_once 'inc/roles.php';  // Función tiene_permiso()
+
+// Ruta del archivo JSON con servidores remotos guardados
+$archivoRemotos = __DIR__ . '/remotos.json';
+
+// Carga servidores remotos guardados
+$servidores = [];
+if (file_exists($archivoRemotos)) {
+    $servidores = json_decode(file_get_contents($archivoRemotos), true);
+    if (!is_array($servidores)) {
+        $servidores = [];
+    }
+}
+
+// --- GESTIÓN SERVIDORES REMOTOS ---
+
+// Activar servidor remoto seleccionado desde dropdown en dashboard.php
+if (isset($_POST['servidor_remoto_seleccionado'])) {
+    $host = trim($_POST['servidor_remoto_seleccionado']);
+    if ($host === 'local') {
+        // Desactivar conexión remota (usar local)
+        unset($_SESSION['remoto']);
+        $_SESSION['output'] = "🌐 Conexión remota desactivada, usando sistema local.";
+    } elseif (isset($servidores[$host])) {
+        $_SESSION['remoto'] = [
+            'host' => $host,
+            'usuario' => $servidores[$host]['usuario'],
+            'clave' => $servidores[$host]['clave'],
+        ];
+        $_SESSION['output'] = "🌐 Conexión remota activada a $host.";
+    } else {
+        $_SESSION['output'] = "❌ Servidor remoto no encontrado.";
+    }
+    header("Location: dashboard.php");
+    exit;
+}
+
+// Añadir nuevo servidor remoto
+if (isset($_POST['nuevo_host'], $_POST['nuevo_usuario'], $_POST['nuevo_clave'])) {
+    $nuevo_host = trim($_POST['nuevo_host']);
+    $nuevo_usuario = trim($_POST['nuevo_usuario']);
+    $nuevo_clave = trim($_POST['nuevo_clave']);
+
+    if ($nuevo_host === '' || $nuevo_usuario === '' || $nuevo_clave === '') {
+        $_SESSION['output'] = "❗ Debes completar todos los campos para añadir un servidor remoto.";
+        header("Location: dashboard.php");
+        exit;
+    }
+
+    // Agrega o actualiza servidor remoto en el array
+    $servidores[$nuevo_host] = [
+        'usuario' => $nuevo_usuario,
+        'clave' => $nuevo_clave,
+    ];
+
+    // Guarda en JSON
+    file_put_contents($archivoRemotos, json_encode($servidores, JSON_PRETTY_PRINT));
+
+    $_SESSION['output'] = "✅ Servidor remoto $nuevo_host agregado/actualizado correctamente.";
+    header("Location: dashboard.php");
+    exit;
+}
+
+// Eliminar servidor remoto guardado
+if (isset($_POST['eliminar_servidor'])) {
+    $host_eliminar = trim($_POST['eliminar_servidor']);
+    if (isset($servidores[$host_eliminar])) {
+        unset($servidores[$host_eliminar]);
+        file_put_contents($archivoRemotos, json_encode($servidores, JSON_PRETTY_PRINT));
+
+        // Si el servidor eliminado era el activo, desactivamos la conexión remota
+        if (isset($_SESSION['remoto']['host']) && $_SESSION['remoto']['host'] === $host_eliminar) {
+            unset($_SESSION['remoto']);
+        }
+
+        $_SESSION['output'] = "🗑️ Servidor remoto $host_eliminar eliminado.";
+    } else {
+        $_SESSION['output'] = "❌ El servidor remoto no existe.";
+    }
+    header("Location: dashboard.php");
+    exit;
+}
+
+// --- FIN GESTIÓN SERVIDORES REMOTOS ---
+
+// Obtiene datos del servidor remoto activo desde sesión
+$servidor_remoto = $_SESSION['remoto'] ?? null;
+
+function ejecutar_local($comando) {
     $resultado = shell_exec($comando . ' 2>&1');
     return $resultado ?: "No se produjo salida del comando.";
+}
+
+function ejecutar_remoto($comando) {
+    global $servidor_remoto;
+
+    if (!$servidor_remoto) {
+        return "❌ No hay servidor remoto configurado.";
+    }
+
+    // Datos de conexión remota
+    $host = escapeshellarg($servidor_remoto['host']);
+    $usuario = escapeshellarg($servidor_remoto['usuario']);
+    $clave = escapeshellarg($servidor_remoto['clave']);
+
+    // Usa sshpass para pasar la contraseña y ejecutar el comando vía SSH
+    // -o StrictHostKeyChecking=no para evitar bloqueo por primera conexión
+    $ssh_comando = "sshpass -p $clave ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 $usuario@$host " . escapeshellarg($comando) . " 2>&1";
+
+    $resultado = shell_exec($ssh_comando);
+    return $resultado ?: "No se produjo salida del comando remoto.";
+}
+
+// Función que decide ejecutar local o remoto
+function ejecutar($comando) {
+    global $servidor_remoto;
+    if ($servidor_remoto) {
+        return ejecutar_remoto($comando);
+    } else {
+        return ejecutar_local($comando);
+    }
 }
 
 function validar_post($clave) {
     return isset($_POST[$clave]) && trim($_POST[$clave]) !== '';
 }
 
-// Obtener la acción solicitada
+// Log de acciones
+$logfile = __DIR__ . '/logs/panel.log';
+
+function log_actividad($usuario, $accion) {
+    global $logfile;
+    $fecha = date('Y-m-d H:i:s');
+    $linea = "[$fecha] Usuario: $usuario | Acción: $accion\n";
+
+    try {
+        $logDir = dirname($logfile);
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0755, true);
+        }
+        file_put_contents($logfile, $linea, FILE_APPEND | LOCK_EX);
+    } catch (Exception $e) {
+        // Manejo opcional de errores en el log
+    }
+}
+
+// Obtener acción solicitada
 $accion = $_POST['accion'] ?? '';
 
-// Comprobar permisos
+// Verificar permisos
 if (!tiene_permiso($accion)) {
     $_SESSION['output'] = "❌ No tienes permiso para esta acción.";
     header("Location: dashboard.php");
     exit;
 }
 
+// Registrar acción en log
+log_actividad($_SESSION['usuario'] ?? 'desconocido', $accion);
+
 $output = "Acción no reconocida.";
 
+// ------------------ (resto de tu switch case sin cambios) ------------------
 switch ($accion) {
-
-    // ---------------- Backups ----------------
     case 'hacer_backup':
         $output = ejecutar("sudo /usr/local/bin/hacer_backup.sh");
         break;
-
     case 'eliminar_backups':
         $output = ejecutar("sudo find /var/backups/ -type f -name '*.tar.gz' -mtime +7 -delete && echo 'Backups antiguos eliminados.'");
         break;
-
     case 'listar_backups':
         $output = ejecutar("ls -lh /var/backups/");
         break;
-
     case 'eliminar_todos_los_backups':
         $output = ejecutar("sudo find /var/backups/ -type f -name '*.tar.gz' -delete && echo '🗑️ Todos los backups eliminados.'");
         break;
@@ -342,6 +482,18 @@ switch ($accion) {
         $output = "🛠️ LOGS DE APACHE (/var/log/apache2/error.log)\n";
         $output .= str_repeat("─", 50) . "\n";
         $output .= ejecutar("sudo tail -n 50 /var/log/apache2/error.log");
+        break;
+
+    // ---------------- Registro de actividades ----------------
+    case 'ver_log_panel':
+        $logfile = __DIR__ . '/logs/panel.log';
+        if (file_exists($logfile)) {
+            $output = "📖 Registro de actividades del panel\n";
+            $output .= str_repeat("─", 50) . "\n";
+            $output .= file_get_contents($logfile);
+        } else {
+            $output = "ℹ️ No se encontró el archivo de registro.";
+        }
         break;
 
 }

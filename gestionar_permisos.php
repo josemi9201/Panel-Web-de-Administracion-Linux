@@ -11,7 +11,7 @@ $archivo_roles = __DIR__ . '/inc/roles.php';
 $acciones_disponibles = [
     "hacer_backup", "listar_backups", "eliminar_backups", "eliminar_todos_los_backups", "descargar_backup",
     "uso_sistema", "ver_procesos", "ver_conexiones", "ver_logs", "ver_logs_apache", "ver_uptime",
-    "usuarios_conectados", "intentos_fallidos", "actualizar_sistema", "reiniciar_sistema"
+    "usuarios_conectados", "intentos_fallidos", "actualizar_sistema", "reiniciar_sistema", "ver_uso_grafico"
 ];
 
 // Procesar eliminación

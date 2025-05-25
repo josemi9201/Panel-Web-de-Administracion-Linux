@@ -2,24 +2,86 @@
 include_once 'inc/auth.php';
 include_once 'inc/roles.php';
 include_once 'templates/header.php';
+
+// Cargar servidores remotos desde archivo JSON
+$archivoRemotos = __DIR__ . '/remotos.json';
+$servidores = [];
+if (file_exists($archivoRemotos)) {
+    $servidores = json_decode(file_get_contents($archivoRemotos), true);
+    if (!is_array($servidores)) $servidores = [];
+}
+
+$servidor_remoto_activo = $_SESSION['remoto']['host'] ?? null;
 ?>
 
 <h2>Panel de administración</h2>
 <p>Bienvenido, <?= htmlspecialchars($_SESSION['usuario']) ?> | Rol: <?= htmlspecialchars($_SESSION['rol']) ?> | <a href="logout.php">Cerrar sesión</a></p>
 
-<?php
-if (isset($_SESSION['output'])) {
-    echo "<pre>" . htmlspecialchars($_SESSION['output']) . "</pre>";
-    unset($_SESSION['output']);
-}
-?>
+<?php if (isset($_SESSION['output'])): ?>
+    <pre><?= htmlspecialchars($_SESSION['output']) ?></pre>
+    <?php unset($_SESSION['output']); ?>
+<?php endif; ?>
+
+<div class="accordion">
+    <button class="accordion-button" aria-expanded="false" aria-controls="scripts" id="scripts-button">
+        📤 Subir scripts al servidor remoto
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <div class="accordion-content" id="scripts" role="region" aria-labelledby="scripts-button">
+        <form method="get" action="subir_scripts_remotos.php" target="_blank" style="margin-top: 10px;">
+            <button>Ejecutar subida de scripts</button>
+        </form>
+    </div>
+</div>
+
+<div class="accordion">
+    <button class="accordion-button" aria-expanded="false" aria-controls="conexion-remota" id="conexion-remota-button">
+        🌐 Conexión remota
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <div class="accordion-content" id="conexion-remota" role="region" aria-labelledby="conexion-remota-button">
+        <form method="post" action="acciones.php" style="margin-bottom: 20px;">
+            <label>Seleccionar servidor remoto activo:</label>
+            <select name="servidor_remoto_seleccionado" required>
+                <option value="local" <?= $servidor_remoto_activo === null ? 'selected' : '' ?>>-- Ninguno (Local) --</option>
+                <?php foreach ($servidores as $host => $data): ?>
+                    <option value="<?= htmlspecialchars($host) ?>" <?= ($host === $servidor_remoto_activo) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($host . " (Usuario: " . $data['usuario'] . ")") ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit">Activar</button>
+        </form>
+
+        <form method="post" action="acciones.php" style="margin-bottom: 20px;">
+            <h4>Añadir servidor remoto</h4>
+            <input type="text" name="nuevo_host" placeholder="Host o IP" required>
+            <input type="text" name="nuevo_usuario" placeholder="Usuario SSH" required>
+            <input type="password" name="nuevo_clave" placeholder="Contraseña SSH" required>
+            <button type="submit">Agregar servidor</button>
+        </form>
+
+        <?php if ($servidores): ?>
+            <h4>Servidores remotos guardados</h4>
+            <form method="post" action="acciones.php">
+                <select name="eliminar_servidor" required>
+                    <option value="">-- Selecciona para eliminar --</option>
+                    <?php foreach ($servidores as $host => $data): ?>
+                        <option value="<?= htmlspecialchars($host) ?>">
+                            <?= htmlspecialchars($host . " (Usuario: " . $data['usuario'] . ")") ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit" onclick="return confirm('¿Seguro que quieres eliminar este servidor?')">Eliminar servidor</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</div>
 
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="admin-panel" id="admin-panel-button">
         ⚙️ Administración del panel
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="admin-panel" role="region" aria-labelledby="admin-panel-button">
         <?php if ($_SESSION['rol'] === 'admin' || (isset($roles[$_SESSION['rol']]) && in_array('*', $roles[$_SESSION['rol']]))): ?>
@@ -28,6 +90,9 @@ if (isset($_SESSION['output'])) {
             </form>
             <form method="get" action="gestionar_roles.php">
                 <button>🔐 Gestionar roles y permisos</button>
+            </form>
+            <form method="get" action="ver_logs_acciones.php">
+                <button>📜 Ver log de acciones</button>
             </form>
         <?php else: ?>
             <p>❌ No tienes permisos para esta sección.</p>
@@ -38,9 +103,7 @@ if (isset($_SESSION['output'])) {
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="sistema" id="sistema-button">
         🛠️ Sistema y mantenimiento
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="sistema" role="region" aria-labelledby="sistema-button">
         <form method="post" action="acciones.php">
@@ -55,25 +118,25 @@ if (isset($_SESSION['output'])) {
             <?php if (tiene_permiso('limpieza_avanzada')): ?><button name="accion" value="limpieza_avanzada">Limpieza avanzada</button><?php endif; ?>
         </form>
 
-        <form method="post" action="acciones.php" onsubmit="return confirm('¿Seguro que deseas terminar este proceso?')">
-            <input type="number" name="pid" placeholder="PID del proceso" required>
-            <?php if (tiene_permiso('kill_pid')): ?>
+        <?php if (tiene_permiso('kill_pid')): ?>
+            <form method="post" action="acciones.php" onsubmit="return confirm('¿Seguro que deseas terminar este proceso?')">
+                <input type="number" name="pid" placeholder="PID del proceso" required>
                 <button name="accion" value="kill_pid">Finalizar proceso</button>
-            <?php endif; ?>
-        </form>
+            </form>
+        <?php endif; ?>
 
-        <form method="get" action="uso_grafico_simple.php">
-            <button>📈 Ver uso del sistema en gráfico</button>
-        </form>
+        <?php if (tiene_permiso('ver_uso_grafico')): ?>
+            <form method="get" action="uso_grafico_simple.php">
+                <button>📈 Ver uso del sistema en gráfico</button>
+            </form>
+        <?php endif; ?>
     </div>
 </div>
 
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="backups" id="backups-button">
         📁 Backups
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="backups" role="region" aria-labelledby="backups-button">
         <form method="post" action="acciones.php">
@@ -89,9 +152,7 @@ if (isset($_SESSION['output'])) {
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="red" id="red-button">
         📡 Red y diagnósticos
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="red" role="region" aria-labelledby="red-button">
         <form method="post" action="acciones.php">
@@ -106,9 +167,7 @@ if (isset($_SESSION['output'])) {
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="seguridad" id="seguridad-button">
         🔒 Seguridad
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="seguridad" role="region" aria-labelledby="seguridad-button">
         <form method="post" action="acciones.php">
@@ -122,9 +181,7 @@ if (isset($_SESSION['output'])) {
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="usuarios" id="usuarios-button">
         👥 Usuarios y seguridad
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="usuarios" role="region" aria-labelledby="usuarios-button">
         <form method="post" action="acciones.php">
@@ -164,9 +221,7 @@ if (isset($_SESSION['output'])) {
 <div class="accordion">
     <button class="accordion-button" aria-expanded="false" aria-controls="firewall" id="firewall-button">
         🛡️ Firewall (UFW)
-        <svg class="accordion-icon" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
+        <svg class="accordion-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
     <div class="accordion-content" id="firewall" role="region" aria-labelledby="firewall-button">
         <form method="post" action="acciones.php">
