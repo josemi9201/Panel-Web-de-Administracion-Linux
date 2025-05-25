@@ -1,69 +1,53 @@
-## 📝 ANTEPROYECTO – Panel Web de Administración Linux Multiusuario 
+#Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
 
-### 📌 **Introducción**
 
-En entornos profesionales, administrar uno o varios servidores Linux requiere experiencia técnica y acceso por terminal. Esta dependencia puede generar errores o limitar el control por parte de ciertos perfiles. Con este proyecto se pretende desarrollar un **panel web seguro y accesible** que permita **gestionar tanto el servidor local como otros servidores Linux remotos** mediante tareas automatizadas y controladas por permisos de usuario.
+## Introducción
 
----
-
-### 🎯 **Finalidad**
-
-Proporcionar un sistema centralizado desde el que distintos usuarios, con diferentes permisos, puedan administrar uno o más servidores Linux. El sistema permitirá ejecutar tareas administrativas de mantenimiento, supervisión y seguridad sin necesidad de acceso directo por terminal.
+Este proyecto consiste en el desarrollo de un panel de administración web para sistemas Linux que facilita la gestión y monitorización tanto de un servidor local como de múltiples servidores remotos. La interfaz permite ejecutar comandos, gestionar usuarios, controlar el firewall, supervisar logs, y realizar diagnósticos, todo desde una única plataforma. Se ha implementado además la funcionalidad de conexión remota mediante SSH, permitiendo seleccionar y administrar diferentes servidores de forma segura y eficiente.
 
 ---
 
-### 🎯 **Objetivos**
+## Finalidad
 
-#### Objetivo General:
-
-Desarrollar un **panel web interactivo y seguro** que permita a usuarios autenticados ejecutar tareas administrativas sobre el servidor local y otros servidores remotos.
-
-#### Objetivos Específicos:
-
-- Implementar login con contraseña cifrada y roles personalizados.
-- Controlar permisos por usuario para limitar o permitir acciones específicas.
-- Permitir al administrador:
-	- Gestionar usuarios del panel (crear, borrar, cambiar contraseña).
-	- Asignar permisos dinámicamente mediante checkboxes.
-- Funcionalidades principales del panel:
-	- Gestión de backups.
-	- Visualización de CPU/RAM/Disco con gráficos en tiempo real.
-	- Supervisión de procesos activos y posibilidad de finalizar procesos.
-	- Verificación de logs del sistema y Apache.
-	- Diagnóstico de red y revisión de conexiones activas.
-	- Gestión de reglas del firewall UFW.
-	- Visualización y edición de tareas programadas (cron).
-	- Administración de servicios básicos (Apache, SSH, MySQL, etc.).
-	- Ejecución remota de tareas sobre otros servidores registrados.
+La finalidad del proyecto es proporcionar una herramienta sencilla, accesible y centralizada para la administración de sistemas Linux, reduciendo la complejidad de tareas habituales y permitiendo a los administradores operar desde un entorno web intuitivo. Además, busca optimizar la gestión de servidores remotos, facilitando la ejecución de acciones administrativas sin necesidad de acceso directo por consola, aumentando así la eficiencia operativa y la seguridad.
 
 ---
 
-### 🧰 **Medios necesarios**
+## Objetivo
 
-- **Servidor principal Linux** con Apache2, PHP y permisos `sudo`
-- **PHP 7+**, HTML5, CSS3 (estilo unificado con `style.css`)
-- **Chart.js** para gráficos dinámicos
-- **Bot de Telegram** para alertas de login
-- **Scripts Bash personalizados** para tareas como backups, verificación de integridad o limpieza del sistema
-- **Archivos `usuarios.php` y `permisos.php`** para gestión dinámica desde el panel
+El objetivo principal es desarrollar un panel funcional y seguro que permita:
+
+- Administrar sistemas Linux locales y remotos mediante comandos ejecutados por SSH.
+- Gestionar múltiples servidores remotos con almacenamiento y activación dinámica de sus credenciales.
+- Facilitar la ejecución de scripts y tareas comunes del sistema desde una interfaz gráfica.
+- Implementar un sistema de roles y permisos para controlar el acceso a diferentes funcionalidades.
+- Permitir la subida y despliegue automatizado de scripts en servidores remotos para mantener la funcionalidad del panel.
 
 ---
 
-### 🗓️ **Planificación (70 horas estimadas)**
+## Medios utilizados
 
-| Fase | Actividad | Horas |
-| --- | --- | --- |
-| 1 | Diseño inicial del panel y autenticación con login (admin) | 6h |
-| 2 | Estructura modular del panel, separación por secciones | 6h |
-| 3 | Implementación de backups (crear, listar, eliminar, descargar) | 5h |
-| 4 | Monitorización del sistema con gráficos: CPU, RAM, disco | 6h |
-| 5 | Gestión de procesos y tareas crontab | 5h |
-| 6 | Diagnóstico de red, conexiones activas, intentos fallidos | 5h |
-| 7 | Gestión de firewall UFW (ver estado, añadir/quitar reglas) | 4h |
-| 8 | Administración de usuarios del panel (crear, borrar, cambiar contraseña) | 5h |
-| 9 | Sistema de permisos dinámicos con checkboxes y `permisos.php` | 5h |
-| 10 | Integración de ejecución remota en servidores externos (vía SSH/Ansible) | 7h |
-| 11 | Estética y estilo del panel (CSS, estructura, navegación) | 3h |
-| 12 | Pruebas, correcciones, documentación interna y comentarios | 3h |
+Para llevar a cabo el proyecto se han utilizado las siguientes herramientas y tecnologías:
 
-**Total estimado: 70 horas**
+- **PHP**: Desarrollo del backend y lógica del panel.
+- **HTML, CSS y JavaScript**: Construcción de la interfaz web y experiencia de usuario, con componentes dinámicos como acordeones.
+- **SSH y sshpass**: Establecimiento de conexiones seguras y ejecución remota de comandos.
+- **JSON**: Almacenamiento local de datos de configuración, como la lista de servidores remotos.
+- **Sistemas Linux**: Entorno para el panel y servidores administrados.
+- **Bash scripting**: Scripts auxiliares para tareas específicas (backups, limpieza, diagnósticos).
+- **Gestión de sesiones PHP**: Para mantener el estado del usuario y la conexión remota activa.
+- **Control de acceso basado en roles y permisos**: Para garantizar la seguridad y restricción de funcionalidades.
+
+---
+
+## Tiempo invertido
+
+El desarrollo total del proyecto ha requerido aproximadamente **70 horas**, distribuidas en:
+
+- Diseño y planificación: 8 horas
+- Desarrollo backend y lógica PHP: 20 horas
+- Construcción de la interfaz y usabilidad: 12 horas
+- Implementación de conexiones remotas y gestión de servidores: 10 horas
+- Funcionalidad para subida y despliegue de scripts remotos: 5 horas
+- Pruebas, depuración y mejoras: 10 horas
+- Documentación y presentación final: 5 horas
