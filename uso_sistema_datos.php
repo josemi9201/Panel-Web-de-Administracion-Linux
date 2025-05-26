@@ -1,22 +1,36 @@
 <?php
 include_once 'inc/auth.php';
 
-$cpu_raw = shell_exec("top -bn1 | grep '%Cpu' | awk '{print 100 - $8}'");
-$cpu = floatval(trim($cpu_raw));
+// Obtener datos del sistema para CPU, RAM y Disco
 
-$mem = preg_split('/\s+/', trim(shell_exec("free -m | grep Mem:")));
-$ram_total = intval($mem[1]);
-$ram_usada = intval($mem[2]);
+// CPU usage: obtener porcentaje usado (ejemplo simple con top)
+$cpu_raw = shell_exec("top -bn1 | grep '%Cpu(s)'");
+preg_match('/(\d+\.\d+)\s*id/', $cpu_raw, $matches);
+$cpu_usada = isset($matches[1]) ? 100 - floatval($matches[1]) : 0;
+$cpu_usada = round($cpu_usada, 1);
 
-$disk = preg_split('/\s+/', trim(shell_exec("df / | tail -1")));
-$disk_total = intval($disk[1]);
-$disk_usada = intval($disk[2]);
+// RAM usage: obtener memoria total y libre en MB
+$meminfo = file_get_contents("/proc/meminfo");
+preg_match('/MemTotal:\s+(\d+) kB/', $meminfo, $total_match);
+preg_match('/MemAvailable:\s+(\d+) kB/', $meminfo, $avail_match);
+
+$mem_total = isset($total_match[1]) ? intval($total_match[1]) / 1024 : 0; // MB
+$mem_libre = isset($avail_match[1]) ? intval($avail_match[1]) / 1024 : 0; // MB
+$mem_usada = $mem_total - $mem_libre;
+
+// Disco usage: usar df para la partición root
+$df_raw = shell_exec("df --output=size,used,avail -BM / | tail -n 1");
+$df_parts = preg_split('/\s+/', trim($df_raw));
+
+$disk_total = isset($df_parts[0]) ? intval(rtrim($df_parts[0], 'M')) : 0;
+$disk_usada = isset($df_parts[1]) ? intval(rtrim($df_parts[1], 'M')) : 0;
+$disk_libre = isset($df_parts[2]) ? intval(rtrim($df_parts[2], 'M')) : 0;
 
 header('Content-Type: application/json');
 echo json_encode([
-    "cpu" => $cpu,
-    "ram_usada" => $ram_usada,
-    "ram_libre" => $ram_total - $ram_usada,
-    "disk_usada" => $disk_usada,
-    "disk_libre" => $disk_total - $disk_usada
+    'cpu' => $cpu_usada,
+    'ram_usada' => round($mem_usada, 1),
+    'ram_libre' => round($mem_libre, 1),
+    'disk_usada' => $disk_usada,
+    'disk_libre' => $disk_libre,
 ]);

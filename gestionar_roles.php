@@ -1,4 +1,4 @@
-[200~<?php
+<?php
 include_once 'inc/auth.php';
 include_once 'inc/roles.php';
 include_once 'inc/usuarios.php';
@@ -14,7 +14,7 @@ $acciones_disponibles = [
     "hacer_backup", "listar_backups", "eliminar_backups", "eliminar_todos_los_backups", "descargar_backup",
     // Sistema
     "uso_sistema", "ver_procesos", "kill_pid", "reiniciar_apache", "actualizar_sistema",
-    "limpiar_tmp", "reiniciar_sistema", "limpieza_avanzada", "estado_servicios", "ver_uptime",
+    "limpiar_tmp", "reiniciar_sistema", "limpieza_avanzada", "estado_servicios", "ver_uptime", "ver_uso_grafico",
     // Seguridad
     "intentos_fallidos", "usuarios_conectados", "verificar_integridad",
     // Usuarios

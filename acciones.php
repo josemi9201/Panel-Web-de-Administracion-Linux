@@ -1,9 +1,7 @@
 <?php
 // Activar reporte de errores para depuración (solo desarrollo)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
+//Panel
 session_start();
 include_once 'inc/auth.php';
 include_once 'inc/roles.php';  // Función tiene_permiso()
@@ -94,6 +92,22 @@ if (isset($_POST['eliminar_servidor'])) {
 // Obtiene datos del servidor remoto activo desde sesión
 $servidor_remoto = $_SESSION['remoto'] ?? null;
 
+// Función ejecutar mejorada para capturar salida y código de retorno
+function ejecutar($comando, &$codigo_retorno = null) {
+    global $servidor_remoto;
+    if ($servidor_remoto) {
+        $host = escapeshellarg($servidor_remoto['host']);
+        $usuario = escapeshellarg($servidor_remoto['usuario']);
+        $clave = escapeshellarg($servidor_remoto['clave']);
+        $ssh_comando = "sshpass -p $clave ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 $usuario@$host " . escapeshellarg($comando) . " 2>&1";
+        exec($ssh_comando, $output, $codigo_retorno);
+        return implode("\n", $output);
+    } else {
+        exec($comando . ' 2>&1', $output, $codigo_retorno);
+        return implode("\n", $output);
+    }
+}
+
 function ejecutar_local($comando) {
     $resultado = shell_exec($comando . ' 2>&1');
     return $resultado ?: "No se produjo salida del comando.";
@@ -119,8 +133,8 @@ function ejecutar_remoto($comando) {
     return $resultado ?: "No se produjo salida del comando remoto.";
 }
 
-// Función que decide ejecutar local o remoto
-function ejecutar($comando) {
+// Función que decide ejecutar local o remoto (se mantiene por compatibilidad si se usa en otras partes)
+function ejecutar_simple($comando) {
     global $servidor_remoto;
     if ($servidor_remoto) {
         return ejecutar_remoto($comando);
@@ -131,6 +145,33 @@ function ejecutar($comando) {
 
 function validar_post($clave) {
     return isset($_POST[$clave]) && trim($_POST[$clave]) !== '';
+}
+
+// funcion permisos
+function usuario_existe($usuario) {
+    // Ejecutar id y getent y comprobar salida y código de retorno
+    $cmd_id = "id " . escapeshellarg($usuario) . " 2>&1";
+    $cmd_getent = "getent passwd " . escapeshellarg($usuario) . " 2>&1";
+
+    // Ejecutar comando id
+    exec($cmd_id, $output_id, $code_id);
+    $output_id_text = implode("\n", $output_id);
+
+    // Ejecutar comando getent
+    exec($cmd_getent, $output_getent, $code_getent);
+    $output_getent_text = implode("\n", $output_getent);
+
+    // Usuario existe si id devuelve código 0
+    if ($code_id === 0 && stripos($output_id_text, 'no such user') === false) {
+        return true;
+    }
+
+    // Usuario existe si getent passwd devuelve código 0 y no indica error
+    if ($code_getent === 0 && stripos($output_getent_text, 'no such user') === false && trim($output_getent_text) !== '') {
+        return true;
+    }
+
+    return false;
 }
 
 // Log de acciones
@@ -170,7 +211,7 @@ $output = "Acción no reconocida.";
 // ------------------ (resto de tu switch case sin cambios) ------------------
 switch ($accion) {
     case 'hacer_backup':
-        $output = ejecutar("sudo /usr/local/bin/hacer_backup.sh");
+        $output = ejecutar("sudo /usr/local/bin/hacer_backup.sh 2>&1");
         break;
     case 'eliminar_backups':
         $output = ejecutar("sudo find /var/backups/ -type f -name '*.tar.gz' -mtime +7 -delete && echo 'Backups antiguos eliminados.'");
@@ -289,24 +330,42 @@ switch ($accion) {
         break;
 
     case 'usuarios_conectados':
-        $output = "👥 USUARIOS CONECTADOS\n";
-        $output .= str_repeat("─", 40) . "\n";
+        $raw = ejecutar("w -h");
+        if (trim($raw) === '') {
+            $output = "👥 No hay usuarios conectados actualmente.";
+            break;
+        }
 
-        $lineas = explode("\n", trim(ejecutar("who")));
-        if (count($lineas) <= 1 && empty($lineas[0])) {
-            $output .= "No hay usuarios conectados actualmente.\n";
-        } else {
-            foreach ($lineas as $linea) {
-                if (preg_match('/^(\S+)\s+(\S+)\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2})\s+\(?([^)]+)?\)?/', $linea, $m)) {
-                    $usuario = $m[1];
-                    $terminal = $m[2];
-                    $hora = $m[3];
-                    $ip = isset($m[4]) ? $m[4] : 'local';
-                    $output .= "🔹 Usuario: $usuario | TTY: $terminal\n   🕒 $hora | 🌍 IP: $ip\n\n";
-                } else {
-                    $output .= "ℹ️ $linea\n";
+        $lineas = explode("\n", trim($raw));
+        $output = "👥 Usuarios conectados:\n";
+        $output .= str_repeat("─", 50) . "\n";
+
+        foreach ($lineas as $linea) {
+            $cols = preg_split('/\s+/', $linea);
+
+            $usuario = $cols[0] ?? '-';
+            $terminal = '-';
+            $ip = '-';
+
+            // Si la columna 1 es IP válida, es la IP y terminal es '-'
+            if (isset($cols[1]) && filter_var($cols[1], FILTER_VALIDATE_IP)) {
+                $ip = $cols[1];
+            } else {
+                $terminal = $cols[1] ?? '-';
+                if (isset($cols[2]) && filter_var($cols[2], FILTER_VALIDATE_IP)) {
+                    $ip = $cols[2];
                 }
             }
+
+            $hora = $cols[3] ?? '-';
+            $idle = $cols[4] ?? '-';
+
+            $output .= "👤 Usuario: $usuario\n";
+            $output .= "   🖥️ Terminal: $terminal\n";
+            $output .= "   🌐 IP: $ip\n";
+            $output .= "   ⏰ Conectado desde: $hora\n";
+            $output .= "   💤 Inactivo desde: $idle\n";
+            $output .= str_repeat("-", 50) . "\n";
         }
         break;
 
@@ -317,26 +376,27 @@ switch ($accion) {
     // ---------------- Usuarios ----------------
     case 'crear_usuario':
         if (!empty($_POST['nuevo_usuario']) && !empty($_POST['password_usuario'])) {
-            $user = escapeshellarg($_POST['nuevo_usuario']);
-            $raw_user = $_POST['nuevo_usuario'];
-            $pass = escapeshellarg($_POST['password_usuario']);
+            $raw_user = trim($_POST['nuevo_usuario']);
+            $raw_pass = trim($_POST['password_usuario']);
 
-            $check = trim(shell_exec("getent passwd $raw_user 2>/dev/null"));
+            // Comprobar si usuario existe, ejecutando en local o remoto según corresponda
+            $check = trim(ejecutar("getent passwd " . escapeshellarg($raw_user) . " 2>/dev/null"));
             if ($check !== "") {
                 $output = "⚠️ El usuario '$raw_user' ya existe en el sistema.";
             } else {
-                $create_user_command = "sudo useradd -m $user && echo '$user:$pass' | sudo chpasswd";
-                $create_user_output = shell_exec($create_user_command);
+                // Comando para crear usuario y asignar contraseña
+                $create_user_command = "sudo useradd -m " . escapeshellarg($raw_user) . " && echo " . escapeshellarg("$raw_user:$raw_pass") . " | sudo chpasswd";
 
-                if ($create_user_output === null) {
-                    $check_new_user = trim(shell_exec("getent passwd $raw_user 2>/dev/null"));
-                    if ($check_new_user !== "") {
-                        $output = "✅ Usuario '$raw_user' creado correctamente.";
-                    } else {
-                        $output = "❌ El usuario '$raw_user' no se creó correctamente. Verifique los permisos.";
-                    }
+                // Ejecutar el comando y capturar salida y código de retorno
+                $create_user_output = ejecutar($create_user_command, $codigo_retorno);
+
+                // Verificar si el usuario se creó correctamente
+                $check_new_user = trim(ejecutar("getent passwd " . escapeshellarg($raw_user) . " 2>/dev/null"));
+
+                if ($check_new_user !== "") {
+                    $output = "✅ Usuario '$raw_user' creado correctamente.";
                 } else {
-                    $output = "❌ Hubo un error al crear el usuario: $create_user_output";
+                    $output = "❌ El usuario '$raw_user' no se creó correctamente.\nCódigo de retorno: $codigo_retorno\nSalida del comando:\n$create_user_output";
                 }
             }
         } else {
@@ -345,36 +405,44 @@ switch ($accion) {
         break;
 
     case 'eliminar_usuario':
-        if (!empty($_POST['usuario_borrar'])) {
-            $user = escapeshellarg($_POST['usuario_borrar']);
+    if (!empty($_POST['usuario_borrar'])) {
+        $user = escapeshellarg($_POST['usuario_borrar']);
 
-            $check = trim(ejecutar("id -u $user 2>/dev/null"));
-            if ($check === "") {
-                $output = "⚠️ El usuario '$user' no existe.";
-            } else {
-                $mail_spool = "/var/mail/$user";
-                if (file_exists($mail_spool)) {
-                    ejecutar("sudo rm -f $mail_spool");
+        $check = trim(ejecutar("id -u $user 2>/dev/null"));
+        if ($check === "") {
+            $output = "⚠️ El usuario '$user' no existe.";
+        } else {
+            $mail_spool = "/var/mail/" . trim($_POST['usuario_borrar']);
+            // Comprobar si existe antes de borrar
+            $existe_mail_spool = ejecutar("test -f " . escapeshellarg($mail_spool) . " && echo '1' || echo '0'");
+            if (trim($existe_mail_spool) === '1') {
+                ejecutar("sudo rm -f " . escapeshellarg($mail_spool));
+            }
+
+            $delete_user_command = "sudo userdel -r $user";
+            $delete_user_output = ejecutar($delete_user_command);
+
+            if ($delete_user_output === null || $delete_user_output === "") {
+                $check_deleted_user = trim(ejecutar("id -u $user 2>/dev/null"));
+                if ($check_deleted_user === "") {
+                    $output = "🗑️ Usuario '$user' eliminado correctamente.";
+                } else {
+                    $output = "❌ Hubo un error al eliminar el usuario '$user'.";
                 }
-
-                $delete_user_command = "sudo userdel -r $user";
-                $delete_user_output = ejecutar($delete_user_command);
-
-                if ($delete_user_output === null || $delete_user_output === "") {
-                    $check_deleted_user = trim(ejecutar("id -u $user 2>/dev/null"));
-                    if ($check_deleted_user === "") {
-                        $output = "🗑️ Usuario '$user' eliminado correctamente.";
-                    } else {
-                        $output = "❌ Hubo un error al eliminar el usuario '$user'.";
-                    }
+            } else {
+                // Filtrar el mensaje "mail spool not found" para que no salga error
+                if (strpos($delete_user_output, 'mail spool') !== false && strpos($delete_user_output, 'not found') !== false) {
+                    // Se ignora ese error porque no afecta a la eliminación
+                    $output = "🗑️ Usuario '$user' eliminado correctamente (advertencia ignorada).";
                 } else {
                     $output = "❌ Error al ejecutar el comando para eliminar el usuario: $delete_user_output";
                 }
             }
-        } else {
-            $output = "⚠️ Debe ingresar el nombre del usuario a eliminar.";
         }
-        break;
+    } else {
+        $output = "⚠️ Debe ingresar el nombre del usuario a eliminar.";
+    }
+    break;
 
     case 'cambiar_password':
         if (!empty($_POST['usuario_cambiar']) && !empty($_POST['nueva_contrasena'])) {
@@ -393,18 +461,27 @@ switch ($accion) {
         break;
 
     case 'listar_usuarios':
-        $output = "👥 Usuarios del sistema:\n\n";
-        $usuarios = explode("\n", trim(ejecutar("cut -d: -f1 /etc/passwd")));
+    $comando = <<<BASH
+if command -v lastlog >/dev/null 2>&1; then
+    cut -d: -f1 /etc/passwd | while read user; do
+        id_info=\$(id "\$user")
+        lastlog_info=\$(lastlog -u "\$user" | tail -n 1)
+        echo "🔹 \$user"
+        echo "  \$id_info  Último acceso: \$lastlog_info"
+        echo ""
+    done
+else
+    cut -d: -f1 /etc/passwd | while read user; do
+        id_info=\$(id "\$user")
+        echo "🔹 \$user"
+        echo "  \$id_info"
+        echo ""
+    done
+fi
+BASH;
 
-        foreach ($usuarios as $u) {
-            if ($u === '') continue;
-            $info = ejecutar("id $u 2>/dev/null");
-            if (strpos($info, 'uid=') !== false) {
-                $ultimo_login = trim(ejecutar("lastlog -u $u | tail -n 1"));
-                $output .= "🔹 $u\n  $info  Último acceso: $ultimo_login\n\n";
-            }
-        }
-        break;
+    $output = ejecutar($comando);
+    break;
 
     // ---------------- Firewall ----------------
     case 'ufw_estado':

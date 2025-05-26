@@ -1,12 +1,25 @@
 <?php
 
 $roles = array (
-  'supervisor' =>
+  'supervisor' => 
   array (
     0 => 'ufw_estado',
     1 => 'puertos_abiertos',
   ),
-  'admin' =>
+  'redes' => 
+  array (
+    0 => 'ver_uso_grafico',
+    1 => 'ufw_estado',
+    2 => 'puertos_abiertos',
+    3 => 'agregar_regla',
+    4 => 'eliminar_regla',
+    5 => 'ufw_on',
+    6 => 'ufw_off',
+    7 => 'diagnostico_red',
+    8 => 'ver_conexiones',
+    9 => 'ver_logs_apache',
+  ),
+  'admin' => 
   array (
     0 => '*',
   ),

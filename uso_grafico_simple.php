@@ -17,41 +17,57 @@ $disk_libre = 0;
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: sans-serif;
-            text-align: center;
-            background: #f4f4f4;
+            font-family: 'Inter', sans-serif;
+            background: #121212;
+            color: #e0e0e0;
             padding: 30px;
-        }
-        canvas {
-            max-width: 400px;
-            margin: 20px auto;
-            display: block;
+            text-align: center;
+            margin: 0;
         }
         h2 {
+            color: #bb86fc;
             margin-bottom: 40px;
-            color: #333;
+        }
+        .chart-container {
+            max-width: 400px;
+            margin: 0 auto 40px auto;
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+        }
+        canvas {
+            max-width: 100%;
+            height: auto !important;
         }
         button {
             margin-top: 30px;
             padding: 10px 20px;
-            font-size: 15px;
+            font-size: 1rem;
             border: none;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #bb86fc;
+            color: #121212;
             border-radius: 6px;
             cursor: pointer;
+            transition: background-color 0.25s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #985eff;
         }
     </style>
 </head>
 <body>
     <h2>📊 Uso del sistema</h2>
 
-    <canvas id="cpuChart"></canvas>
-    <canvas id="ramChart"></canvas>
-    <canvas id="diskChart"></canvas>
+    <div class="chart-container">
+        <canvas id="cpuChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="ramChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="diskChart"></canvas>
+    </div>
 
     <script>
     let cpuChart, ramChart, diskChart;
@@ -80,11 +96,14 @@ $disk_libre = 0;
             type: 'doughnut',
             data: {
                 labels: ['CPU Usada', 'Libre'],
-                datasets: [{ data: [0, 100], backgroundColor: ['red', 'lightgray'] }]
+                datasets: [{ data: [0, 100], backgroundColor: ['#bb86fc', '#444'] }]
             },
             options: {
                 plugins: {
-                    title: { display: true, text: 'Uso de CPU (%)' }
+                    title: { display: true, text: 'Uso de CPU (%)', color: '#e0e0e0' },
+                    legend: {
+                        labels: { color: '#e0e0e0' }
+                    }
                 }
             }
         });
@@ -93,11 +112,21 @@ $disk_libre = 0;
             type: 'bar',
             data: {
                 labels: ['RAM Usada', 'Libre'],
-                datasets: [{ data: [0, 0], backgroundColor: ['orange', 'green'] }]
+                datasets: [{ data: [0, 0], backgroundColor: ['#bb86fc', '#444'] }]
             },
             options: {
                 plugins: {
-                    title: { display: true, text: 'Uso de RAM (MB)' }
+                    title: { display: true, text: 'Uso de RAM (MB)', color: '#e0e0e0' },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: '#e0e0e0' },
+                        beginAtZero: true
+                    },
+                    x: {
+                        ticks: { color: '#e0e0e0' }
+                    }
                 }
             }
         });
@@ -106,11 +135,21 @@ $disk_libre = 0;
             type: 'bar',
             data: {
                 labels: ['Disco Usado', 'Libre'],
-                datasets: [{ data: [0, 0], backgroundColor: ['blue', 'gray'] }]
+                datasets: [{ data: [0, 0], backgroundColor: ['#bb86fc', '#444'] }]
             },
             options: {
                 plugins: {
-                    title: { display: true, text: 'Uso de Disco (MB)' }
+                    title: { display: true, text: 'Uso de Disco (MB)', color: '#e0e0e0' },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: '#e0e0e0' },
+                        beginAtZero: true
+                    },
+                    x: {
+                        ticks: { color: '#e0e0e0' }
+                    }
                 }
             }
         });
