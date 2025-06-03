@@ -515,6 +515,8 @@ La función `ejecutar()` encapsula:
 
 Permitir que los scripts administrativos esenciales del panel estén disponibles también en los **servidores remotos**, copiándolos automáticamente desde el servidor local.
 
+![Interfaz subida de scripts a servidores remotos](capturas/script_remoto.png)
+
 ### 📂 Scripts desplegados
 
 Los scripts se suben al directorio remoto: `/usr/local/bin/`.
