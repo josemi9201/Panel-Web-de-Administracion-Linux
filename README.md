@@ -215,7 +215,6 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
   }
 }
 ```
-
 ---
 
 
@@ -245,6 +244,8 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 
 La interfaz es una aplicación de una sola página (SPA) con secciones en **acordeón colapsable** que agrupan las funciones por categorías. Su contenido se **renderiza dinámicamente según el rol del usuario** y si hay conexión remota activa.
 
+![Interfaz del panel](captura_1.png)
+
 ---
 
 ### 🧱 Componentes Principales
@@ -268,6 +269,8 @@ La interfaz es una aplicación de una sola página (SPA) con secciones en **acor
 | Seguridad | `seguridad` | 245–266 | Revisar intentos fallidos, sesiones |
 | Gestión de Usuarios | `usuarios` | 268–310 | Alta, baja y modificación de usuarios |
 | Firewall | `firewall` | 312–359 | Estado y reglas de UFW |
+
+![Ejemplo acordeones de la interfaz abiertos](capturas/captura_2.png)
 
 ---
 
@@ -436,6 +439,8 @@ Guardado en `logs/panel.log`, con creación automática del directorio si no exi
 ### 🔍 Visión General
 
 El sistema permite a los administradores gestionar **múltiples servidores Linux** (locales o remotos) desde una **interfaz web centralizada**, sin necesidad de modificar el código para cambiar entre ejecución local y remota.
+
+![Interfaz conexión remota](capturas/remoto.png)
 
 ---
 
@@ -936,7 +941,8 @@ Permite ver logs del sistema desde la interfaz web:
 
 Mostrar en tiempo real el uso de **CPU, RAM y disco** mediante gráficos interactivos.
 
-![[graficos.png]]
+![Sistema de visualizacion en tiempo real](capturas/graficos.png)
+
 ### Implementación
 
 - Archivo principal: `uso_grafico_simple.php`
@@ -1177,6 +1183,8 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 - Fondo degradado, estructura minimalista
 - Mensajes de error visualmente destacados (`background: #b00020`, `padding`, `border-radius`)
 - Adaptado a móviles y pantallas pequeñas
+
+![Interfaz login del panel](capturas/login.png)
 
 ---
 
