@@ -187,7 +187,7 @@ El **Panel de Administración de Servidores Linux** es una app web PHP organizad
 
 Se utiliza un controlador central (`acciones.php`) para manejar todas las acciones, con funciones unificadas como `ejecutar()` para decidir si ejecutar comandos localmente o por SSH.
 
-![[capturas/diagrama_1.png]]
+![Arquitectura del sistema](capturas/diagrama_1.png)
 
 ### ⚙️ Componentes Clave
 
