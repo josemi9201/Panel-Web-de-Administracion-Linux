@@ -1072,7 +1072,7 @@ function log_actividad($usuario, $accion) {
 - Interfaz con scroll y diseño dedicado
 - Solo accesible por usuarios con rol `admin`
 
-![[visor_logs.png]]
+![[/capturas/visor_logs.png]]
 
 ---
 
