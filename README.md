@@ -770,8 +770,7 @@ Tres zonas funcionales en `gestionar_usuarios.php`:
 - Confirmaciones de eliminación (JS)
 - Escapado con `htmlspecialchars()` (XSS)
 
-![[usuarios.png]]
-
+![Interfaz usuarios](capturas/usuarios.png)
 ---
 
 ## 🔐 Seguridad en Gestión de Usuarios
