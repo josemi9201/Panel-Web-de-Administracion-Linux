@@ -72,8 +72,8 @@
         
     - Seguridad en ejecución y validación de acciones
     
-- **Sistema de Logs y Auditoría**
-    
+- **Sistemas de Logs y auditorias**
+
     - Registro de actividad (`log_actividad`)
         
     - Formato y almacenamiento de logs
@@ -187,7 +187,7 @@ El **Panel de Administración de Servidores Linux** es una app web PHP organizad
 
 Se utiliza un controlador central (`acciones.php`) para manejar todas las acciones, con funciones unificadas como `ejecutar()` para decidir si ejecutar comandos localmente o por SSH.
 
-
+![[diagrama_1.png]]
 ### ⚙️ Componentes Clave
 
 - **acciones.php**: controlador principal que gestiona:
@@ -216,6 +216,7 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 ```
 
 ---
+
 
 ### 📁 Organización de Archivos
 
@@ -754,11 +755,11 @@ $usuarios_validos = [...]; // Estructura generada con var_export
 
 Tres zonas funcionales en `gestionar_usuarios.php`:
 
-| Componente | Función |
-| --- | --- |
-| Formulario de alta | Crear nuevos usuarios con rol asignado |
-| Tabla de usuarios | Visualización y opciones de gestión |
-| Cambio de contraseña | Formularios en línea por usuario |
+| Componente           | Función                                |
+| -------------------- | -------------------------------------- |
+| Formulario de alta   | Crear nuevos usuarios con rol asignado |
+| Tabla de usuarios    | Visualización y opciones de gestión    |
+| Cambio de contraseña | Formularios en línea por usuario       |
 
 **Características clave:**
 
@@ -767,6 +768,8 @@ Tres zonas funcionales en `gestionar_usuarios.php`:
 - Validación completa de datos
 - Confirmaciones de eliminación (JS)
 - Escapado con `htmlspecialchars()` (XSS)
+
+![[usuarios.png]]
 
 ---
 
@@ -933,6 +936,7 @@ Permite ver logs del sistema desde la interfaz web:
 
 Mostrar en tiempo real el uso de **CPU, RAM y disco** mediante gráficos interactivos.
 
+![[graficos.png]]
 ### Implementación
 
 - Archivo principal: `uso_grafico_simple.php`
@@ -1067,6 +1071,8 @@ function log_actividad($usuario, $accion) {
 
 - Interfaz con scroll y diseño dedicado
 - Solo accesible por usuarios con rol `admin`
+
+![[visor_logs.png]]
 
 ---
 
