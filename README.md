@@ -244,7 +244,7 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 
 La interfaz es una aplicación de una sola página (SPA) con secciones en **acordeón colapsable** que agrupan las funciones por categorías. Su contenido se **renderiza dinámicamente según el rol del usuario** y si hay conexión remota activa.
 
-![Interfaz del panel](captura_1.png)
+![Interfaz del panel](capturas/captura_1.png)
 
 ---
 
@@ -297,6 +297,8 @@ Esto permite una interfaz dinámica y segura basada en permisos.
 ### 🔁 Flujo de Acciones y Formularios
 
 Los formularios del panel se dirigen a `acciones.php` mediante `POST` (principalmente), usando parámetros como `name="accion" value="nombre_accion"`.
+
+![diagrama flujo de acciones](capturas/diagrama2.png)
 
 #### Tipos de Formularios
 
@@ -571,6 +573,8 @@ Cada script se despliega mediante:
 	- Se crean variables de sesión (`$_SESSION`)
 	- Se envía alerta por **Telegram**
 	- Se redirige al panel (`dashboard.php`)
+
+![Diagrama flujo de login](capturas/diagrama3.png)
 
 ---
 
@@ -1078,7 +1082,7 @@ function log_actividad($usuario, $accion) {
 - Interfaz con scroll y diseño dedicado
 - Solo accesible por usuarios con rol `admin`
 
-![[visor_logs.png]]
+![Interfaz del log de acciones registradas](capturas/visor_logs.png)
 
 ---
 
