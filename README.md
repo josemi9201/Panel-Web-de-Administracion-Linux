@@ -37,11 +37,11 @@
 
 
 
-## 1. 🧭 Introducción General
+## 1. Introducción General
 
 El **Panel de Administración de Servidores Linux** es una aplicación web desarrollada en PHP, diseñada para simplificar la gestión de servidores tanto locales como remotos desde una única interfaz centralizada. Este sistema permite a los administradores ejecutar acciones comunes de mantenimiento, seguridad, supervisión y configuración sin necesidad de acceder manualmente por terminal a cada máquina.
 
-### 🎯 Objetivo del Proyecto
+### Objetivo del Proyecto
 
 El propósito principal del panel es ofrecer una **herramienta visual, segura y extensible** que permita:
 
@@ -56,7 +56,7 @@ El propósito principal del panel es ofrecer una **herramienta visual, segura y 
 - Facilitar tareas críticas como backups, configuración de firewall, diagnóstico de red, gestión de usuarios y más.
 
 
-### ✨ Características Principales
+### Características Principales
 
 - Aplicación tipo **SPA** (Single Page Application) con diseño en **acordeones plegables** por categoría.
     
@@ -74,19 +74,19 @@ El propósito principal del panel es ofrecer una **herramienta visual, segura y 
 
 Para el desarrollo y despliegue de este proyecto se han utilizado los siguientes recursos y herramientas:
 
-- 🌐 **Servidor principal (droplet)**: Alojado en **DigitalOcean**, donde se encuentra instalado el panel y se gestionan tanto los servicios como los archivos de configuración y ejecución.
-- 🖥️ **Servidores gestionados**: También desplegados en DigitalOcean y configurados para conexión vía SSH desde el panel.
-- 📦 **Software base**:
+-  **Servidor principal (droplet)**: Alojado en **DigitalOcean**, donde se encuentra instalado el panel y se gestionan tanto los servicios como los archivos de configuración y ejecución.
+-  **Servidores gestionados**: También desplegados en DigitalOcean y configurados para conexión vía SSH desde el panel.
+-  **Software base**:
 	- Sistema operativo: Debian/Ubuntu
 	- Servidor web: Apache2
 	- PHP 8.x con módulos comunes
 	- `sshpass`, `ufw`, `fail2ban`, `cron`, `scp`, `top`, `df`, `free`, etc.
-- 📬 **Telegram Bot** para notificaciones de eventos críticos (logins).
-- 💾 **Almacenamiento remoto** para backups y scripts mediante `scp`.
-- 🖼️ **Frontend responsivo** con HTML, CSS y JavaScript puro (sin frameworks).
-- 📈 **Chart.js** para monitorización visual de recursos en tiempo real.
+-  **Telegram Bot** para notificaciones de eventos críticos (logins).
+-  **Almacenamiento remoto** para backups y scripts mediante `scp`.
+-  **Frontend responsivo** con HTML, CSS y JavaScript puro (sin frameworks).
+-  **Chart.js** para monitorización visual de recursos en tiempo real.
 
-### 👥 Público Objetivo
+###  Público Objetivo
 
 Este panel está pensado especialmente para:
 
@@ -102,7 +102,7 @@ Este panel está pensado especialmente para:
 
 ## Arquitectura Central
 
-### ✅ Visión General
+### Visión General
 
 El **Panel de Administración de Servidores Linux** es una app web PHP organizada en tres capas:
 
@@ -114,7 +114,7 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 
 ![Arquitectura del sistema](capturas/diagrama_1.png)
 
-### ⚙️ Componentes Clave
+### Componentes Clave
 
 - **acciones.php**: controlador principal que gestiona:
 	- Servidores remotos
@@ -127,7 +127,7 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 
 ---
 
-### 🌐 Conexiones Remotas
+### Conexiones Remotas
 
 - Configuradas en `remotos.json`
 - Activas mediante `$_SESSION['remoto']`
@@ -143,7 +143,7 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 ---
 
 
-### 📁 Organización de Archivos
+### Organización de Archivos
 
 - `dashboard.php`: interfaz principal
 - `login.php`: login y sesiones
@@ -157,15 +157,15 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 
 ---
 
-### 🔄 Gestión de Estado
+### Gestión de Estado
 
 - Sistema con estado mediante variables de sesión
 - La ejecución depende de si `$_SESSION['remoto']` está activo → local o remoto
 
 ---
-## 🖥️ Interfaz del Panel
+## Interfaz del Panel
 
-### 🧩 Estructura General
+### Estructura General
 
 La interfaz es una aplicación de una sola página (SPA) con secciones en **acordeón colapsable** que agrupan las funciones por categorías. Su contenido se **renderiza dinámicamente según el rol del usuario** y si hay conexión remota activa.
 
@@ -173,7 +173,7 @@ La interfaz es una aplicación de una sola página (SPA) con secciones en **acor
 
 ---
 
-### 🧱 Componentes Principales
+### Componentes Principales
 
 - **Encabezado**: muestra nombre de usuario, rol, servidor remoto (o local) y botón de logout (`dashboard.php`, líneas 25–31).
 - **Resultado de comandos**: se usa `$_SESSION['output']` para mostrar salida de acciones ejecutadas y luego se elimina.
@@ -181,7 +181,7 @@ La interfaz es una aplicación de una sola página (SPA) con secciones en **acor
 
 ---
 
-### 📂 Secciones del Acordeón
+### Secciones del Acordeón
 
 | Sección | ID | Líneas | Función Principal |
 | --- | --- | --- | --- |
@@ -199,7 +199,7 @@ La interfaz es una aplicación de una sola página (SPA) con secciones en **acor
 
 ---
 
-### 🔐 Renderizado según Permisos
+### Renderizado según Permisos
 
 Se usa `tiene_permiso()` para mostrar/ocultar botones o formularios según el rol:
 
@@ -211,7 +211,7 @@ Esto permite una interfaz dinámica y segura basada en permisos.
 
 ---
 
-### 🌍 Integración con Servidores Remotos
+### Integración con Servidores Remotos
 
 - Las credenciales se cargan desde `remotos.json`.
 - Desde el acordeón se pueden seleccionar, añadir o eliminar conexiones.
@@ -219,7 +219,7 @@ Esto permite una interfaz dinámica y segura basada en permisos.
 
 ---
 
-### 🔁 Flujo de Acciones y Formularios
+### Flujo de Acciones y Formularios
 
 Los formularios del panel se dirigen a `acciones.php` mediante `POST` (principalmente), usando parámetros como `name="accion" value="nombre_accion"`.
 
@@ -236,7 +236,7 @@ Los formularios del panel se dirigen a `acciones.php` mediante `POST` (principal
 
 ---
 
-### 📂 Categorías de Acciones
+### Categorías de Acciones
 
 | Categoría       | Ejemplos de Acciones                            | Líneas Aprox. |
 | --------------- | ----------------------------------------------- | ------------- |
@@ -248,22 +248,22 @@ Los formularios del panel se dirigen a `acciones.php` mediante `POST` (principal
 | Conexión Remota | `servidor_remoto_seleccionado`, etc.            | 59–95         |
 
 ---
-## ⚙️ Controlador de Acciones
+## Controlador de Acciones
 
-### 🧠 Rol Principal
+### Rol Principal
 
 El archivo `acciones.php` actúa como **centro de procesamiento** del panel, recibiendo solicitudes del usuario, **verificando permisos**, ejecutando comandos local/remoto y devolviendo los resultados. Gestiona tareas como backups, usuarios, seguridad, red y logs.
 
 ---
 
-### 🧱 Arquitectura Interna
+### Arquitectura Interna
 
 - Patrón **solicitud-respuesta** basado en `POST + switch-case`.
 - Usa sesiones para determinar si ejecutar comandos **locales o remotos** (`$_SESSION['remoto']`).
 
 ---
 
-### 🚀 Sistema de Ejecución de Comandos
+### Sistema de Ejecución de Comandos
 
 | Función | Propósito |
 | --- | --- |
@@ -280,7 +280,7 @@ sshpass -p $clave ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 $usuario@$
 
 ---
 
-### 🌐 Gestión de Servidores Remotos
+### Gestión de Servidores Remotos
 
 - Configuración almacenada en `remotos.json`.
 - Conexiones activas se guardan en `$_SESSION['remoto']`.
@@ -295,7 +295,7 @@ $servidores = [
 
 ---
 
-### 🔄 Canal de Procesamiento de Acciones
+### Canal de Procesamiento de Acciones
 
 - Validación de permisos con `tiene_permiso()`
 - Ejecución de acción (`switch`)
@@ -304,7 +304,7 @@ $servidores = [
 
 ---
 
-### 🔐 Seguridad y Validación
+### Seguridad y Validación
 
 - Verificación de sesión y rol antes de cada acción.
 - Funciones de validación:
@@ -326,7 +326,7 @@ if (!tiene_permiso($accion)) {
 
 ---
 
-### 📝 Registro de Actividad
+### Registro de Actividad
 
 - Cada acción se registra con:
 	- Fecha y hora
@@ -340,7 +340,7 @@ Guardado en `logs/panel.log`, con creación automática del directorio si no exi
 
 ---
 
-### 🧩 Categorías de Acciones
+### Categorías de Acciones
 
 | Categoría | Nº Acciones | Ejemplos |
 | --- | --- | --- |
@@ -353,7 +353,7 @@ Guardado en `logs/panel.log`, con creación automática del directorio si no exi
 
 ---
 
-### ⚙️ Patrones de Comando
+### Patrones de Comando
 
 - Comandos con `sudo`, validación de entrada y salida formateada.
 - Resultados claros con emojis y estructuras.
@@ -361,9 +361,9 @@ Guardado en `logs/panel.log`, con creación automática del directorio si no exi
 
 ---
 
-## 🖧 Gestión de Servidores Remotos
+## Gestión de Servidores Remotos
 
-### 🔍 Visión General
+### Visión General
 
 El sistema permite a los administradores gestionar **múltiples servidores Linux** (locales o remotos) desde una **interfaz web centralizada**, sin necesidad de modificar el código para cambiar entre ejecución local y remota.
 
@@ -371,7 +371,7 @@ El sistema permite a los administradores gestionar **múltiples servidores Linux
 
 ---
 
-### 🧱 Arquitectura General
+### Arquitectura General
 
 - Almacena configuraciones de servidores en `remotos.json`
 - Utiliza **sesiones PHP** para mantener la conexión activa
@@ -379,7 +379,7 @@ El sistema permite a los administradores gestionar **múltiples servidores Linux
 
 ---
 
-### 🗂️ Registro y Configuración de Servidores
+### Registro y Configuración de Servidores
 
 | Campo | Validación |
 | --- | --- |
@@ -399,13 +399,13 @@ El sistema permite a los administradores gestionar **múltiples servidores Linux
 
 ---
 
-### ⚙️ Ejecución de Comandos
+### Ejecución de Comandos
 
-#### 🔁 Flujo Unificado
+#### Flujo Unificado
 
 La función `ejecutar()` determina si debe ejecutar el comando localmente o remotamente según el estado de la sesión.
 
-#### 🖥️ Ejecución Local
+#### Ejecución Local
 
 ```
 function ejecutar_local($comando) {
@@ -414,7 +414,7 @@ function ejecutar_local($comando) {
 }
 ```
 
-#### 🌐 Ejecución Remota (vía SSH)
+#### Ejecución Remota (vía SSH)
 
 Construcción del comando:
 
@@ -426,7 +426,7 @@ sshpass -p PASSWORD ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 USUARIO@
 
 ---
 
-### 🧩 Interfaz Unificada
+### Interfaz Unificada
 
 La función `ejecutar()` encapsula:
 
@@ -434,19 +434,19 @@ La función `ejecutar()` encapsula:
 - Captura de salida
 - Gestión de errores
 
-## 🧾 Sistema de Despliegue de Scripts
+## Sistema de Despliegue de Scripts
 
-### 🎯 Objetivo
+### Objetivo
 
 Permitir que los scripts administrativos esenciales del panel estén disponibles también en los **servidores remotos**, copiándolos automáticamente desde el servidor local.
 
 ![Interfaz subida de scripts a servidores remotos](capturas/script_remoto.png)
 
-### 📂 Scripts desplegados
+### Scripts desplegados
 
 Los scripts se suben al directorio remoto: `/usr/local/bin/`.
 
-### ⚙️ Proceso de Despliegue
+### Proceso de Despliegue
 
 Cada script se despliega mediante:
 
@@ -456,7 +456,7 @@ Cada script se despliega mediante:
 
 ---
 
-### 🗂️ Estructura de Configuración y Sesión
+### Estructura de Configuración y Sesión
 
 **Archivo `remotos.json`**:
 
@@ -481,7 +481,7 @@ Cada script se despliega mediante:
 
 ---
 
-### 🔒 Seguridad
+### Seguridad
 
 - Requiere permisos (`tiene_permiso()`)
 - Comandos y datos sanitizados (`escapeshellarg()`)
@@ -490,9 +490,9 @@ Cada script se despliega mediante:
 
 ---
 
-## 🔐 Autenticación y Autorización – Resumen
+## Autenticación y Autorización – Resumen
 
-### 🔄 Flujo de Login
+### Flujo de Login
 
 1. Usuario envía credenciales → `login.php`
 2. Se validan con `password_verify()` contra hashes bcrypt en `$usuarios_validos`
@@ -505,7 +505,7 @@ Cada script se despliega mediante:
 
 ---
 
-### 👥 Almacenamiento de Usuarios
+### Almacenamiento de Usuarios
 
 - Datos en `inc/usuarios.php`
 - Estructura:
@@ -520,7 +520,7 @@ $usuarios_validos = [
 
 ---
 
-### 🧠 Gestión de Sesiones
+### Gestión de Sesiones
 
 - Se inicializa con `session_start()`
 - Protegida por `inc/auth.php`
@@ -528,7 +528,7 @@ $usuarios_validos = [
 
 ---
 
-### 🧑‍🏫 Control de Acceso (RBAC)
+### Control de Acceso (RBAC)
 
 | Rol | Acceso | Usuarios ejemplo |
 | --- | --- | --- |
@@ -540,7 +540,7 @@ $usuarios_validos = [
 
 ---
 
-### 🛡️ Seguridad Aplicada
+### Seguridad Aplicada
 
 - **Bcrypt** con coste 10 para contraseñas
 - **Cabeceras** para evitar caché de datos sensibles
@@ -550,7 +550,7 @@ $usuarios_validos = [
 
 ## Inicio de Sesión
 
-### 📥 Flujo de Autenticación (`login.php`)
+### Flujo de Autenticación (`login.php`)
 
 1. Usuario envía formulario de login vía `POST`.
 2. Se busca el usuario en `$usuarios_validos`.
@@ -560,7 +560,7 @@ $usuarios_validos = [
 	- Se envía alerta por Telegram
 	- Se redirige al panel (`dashboard.php`)
 
-### 📌 Variables de sesión creadas
+### Variables de sesión creadas
 
 ```
 $_SESSION['autenticado'] = true;
@@ -570,7 +570,7 @@ $_SESSION['rol'] = $user_role;
 
 ---
 
-### 🔎 Protección de Recursos
+### Protección de Recursos
 
 Todas las páginas privadas incluyen:
 
@@ -582,7 +582,7 @@ Este archivo valida sesión y evita el acceso no autorizado.
 
 ---
 
-### ⚠️ Manejo de errores
+### Manejo de errores
 
 - Mensaje genérico: ❌ “Credenciales incorrectas.”
 - Sanitización con `htmlspecialchars()` (prevención XSS)
@@ -590,13 +590,13 @@ Este archivo valida sesión y evita el acceso no autorizado.
 
 ---
 
-## 🛂 Control de Acceso Basado en Roles (RBAC)
+## Control de Acceso Basado en Roles (RBAC)
 
-### 🎯 Objetivo
+### Objetivo
 
 Permitir que solo usuarios con permisos adecuados accedan a ciertas funciones del panel.
 
-### 🧱 Definición de Roles (`inc/roles.php`)
+### Definición de Roles (`inc/roles.php`)
 
 ```
 $roles = array (
@@ -606,7 +606,7 @@ $roles = array (
 );
 ```
 
-### 🔍 Verificación de Permisos – `tiene_permiso()`
+### Verificación de Permisos – `tiene_permiso()`
 
 ```
 function tiene_permiso($accion) {
@@ -622,7 +622,7 @@ Evalúa si el rol actual tiene permiso para ejecutar una acción concreta o si t
 
 ## Arquitectura de Permisos (RBAC)
 
-### 🎯 Acciones Protegidas por Categoría
+### Acciones Protegidas por Categoría
 
 El sistema controla el acceso a acciones como:
 
@@ -632,23 +632,23 @@ El sistema controla el acceso a acciones como:
 - **Firewall y Red:** `ufw_estado`, `ver_conexiones`, etc.
 - **Usuarios y Logs:** `crear_usuario`, `ver_logs`, etc.
 
-### 🛡️ Gestión de Roles
+### Gestión de Roles
 
 - Solo los usuarios con rol `admin` pueden gestionar roles.
 - Los cambios regeneran el archivo `roles.php` con el nuevo array de permisos.
 - Protección especial para el rol `admin`: no se puede eliminar ni editar sus permisos críticos.
 - Se evita borrar roles si hay usuarios aún asignados.
 
-### 🔄 Flujo y Aplicación de Permisos
+### Flujo y Aplicación de Permisos
 
 - El sistema integra `tiene_permiso()` en el controlador (`acciones.php`) para verificar cada acción.
 - Los permisos se asignan durante el login y se almacenan en `$_SESSION['rol']`.
 
 ---
 
-## 👤 Gestión de Usuarios
+## Gestión de Usuarios
 
-### 🗃️ Almacenamiento
+### Almacenamiento
 
 Usuarios almacenados en `inc/usuarios.php` como array PHP:
 
@@ -659,13 +659,13 @@ $usuarios_validos = [
 ];
 ```
 
-### 🧰 Funciones Disponibles
+### Funciones Disponibles
 
 - **Crear usuario:** requiere nombre, contraseña y rol.
 - **Eliminar usuario:** `admin` no puede ser eliminado.
 - **Cambiar contraseña:** requiere usuario y nueva clave, cifrada con `password_hash()`.
 
-### 🔒 Seguridad en la Gestión
+### Seguridad en la Gestión
 
 - Solo el `admin` accede a `gestionar_usuarios.php`.
 - Validaciones al crear usuarios:
@@ -674,7 +674,7 @@ $usuarios_validos = [
 	- Contraseña cifrada con bcrypt.
 - Se usa `htmlspecialchars()` para evitar XSS y `confirm()` en JS para confirmar acciones destructivas.
 
-## 💾 Persistencia de Datos de Usuarios
+## Persistencia de Datos de Usuarios
 
 - El sistema guarda permanentemente los datos de usuarios en `inc/usuarios.php` usando `var_export()`.
 - Los cambios (alta, baja o modificación) se reflejan directamente en el archivo PHP ejecutable mediante `file_put_contents()`.
@@ -688,7 +688,7 @@ $usuarios_validos = [...]; // Estructura generada con var_export
 
 ---
 
-## 👤 Interfaz de Gestión de Usuarios
+## Interfaz de Gestión de Usuarios
 
 Tres zonas funcionales en `gestionar_usuarios.php`:
 
@@ -709,7 +709,7 @@ Tres zonas funcionales en `gestionar_usuarios.php`:
 ![Interfaz usuarios](capturas/usuarios.png)
 ---
 
-## 🔐 Seguridad en Gestión de Usuarios
+## Seguridad en Gestión de Usuarios
 
 - Solo los usuarios con rol `admin` acceden a la gestión.
 - Contraseñas cifradas con `PASSWORD_DEFAULT` (bcrypt).
@@ -718,11 +718,11 @@ Tres zonas funcionales en `gestionar_usuarios.php`:
 
 ---
 
-## ⚙️ Funcionalidades del Sistema
+## Funcionalidades del Sistema
 
 El sistema se organiza en 6 categorías principales, todas procesadas por `acciones.php`.
 
-### 🧠 Flujo General de Acciones
+### Flujo General de Acciones
 
 1. Verificación de permisos (`tiene_permiso()`)
 2. Registro (`log_actividad()`)
@@ -732,7 +732,7 @@ El sistema se organiza en 6 categorías principales, todas procesadas por `accio
 
 ---
 
-## 🖥️ Acciones Administrativas
+## Acciones Administrativas
 
 ### Monitorización y Procesos
 
@@ -759,16 +759,16 @@ Se utilizan comandos como `uptime`, `free -h`, `df -h`, `top`, etc.
 
 ---
 
-## 🔐 Funciones de Seguridad y Control de Acceso
+## Funciones de Seguridad y Control de Acceso
 
-### 👥 Gestión de Cuentas de Usuario
+### Gestión de Cuentas de Usuario
 
 - Permite creación, modificación y eliminación de usuarios.
 - Protecciones integradas: validación de campos, restricción para el usuario `admin`, cifrado de contraseñas con bcrypt.
 
 ---
 
-### 🔥 Gestión del Firewall (UFW)
+### Gestión del Firewall (UFW)
 
 Permite gestionar el firewall UFW desde el panel web:
 
@@ -782,7 +782,7 @@ Permite gestionar el firewall UFW desde el panel web:
 
 ---
 
-### 🌐 Herramientas de Red y Diagnóstico
+### Herramientas de Red y Diagnóstico
 
 - Diagnóstico de conectividad.
 - Visualización de conexiones activas.
@@ -790,7 +790,7 @@ Permite gestionar el firewall UFW desde el panel web:
 
 ---
 
-## 💾 Gestión de Backups y Datos
+## Gestión de Backups y Datos
 
 ### Acciones Disponibles:
 
@@ -805,7 +805,7 @@ Permite gestionar el firewall UFW desde el panel web:
 
 ---
 
-## 📜 Acceso a Logs del Sistema
+## Acceso a Logs del Sistema
 
 Permite ver logs del sistema desde la interfaz web:
 
@@ -819,7 +819,7 @@ Permite ver logs del sistema desde la interfaz web:
 
 ---
 
-## 🚀 Despliegue Remoto de Scripts
+## Despliegue Remoto de Scripts
 
 ### ¿Qué hace?
 
@@ -847,7 +847,7 @@ Permite ver logs del sistema desde la interfaz web:
 
 ---
 
-## 📊 Monitorización del Sistema (Tiempo Real)
+## Monitorización del Sistema (Tiempo Real)
 
 ### Arquitectura:
 
@@ -866,7 +866,7 @@ Permite ver logs del sistema desde la interfaz web:
 - Usa expresiones regulares y cálculos en PHP para presentar datos precisos y en tiempo real.
 
 
-## 📈 Sistema de Visualización en Tiempo Real
+## Sistema de Visualización en Tiempo Real
 
 ### Objetivo
 
@@ -901,7 +901,7 @@ El sistema es **independiente** del controlador `acciones.php`, permitiendo supe
 
 ---
 
-## 📲 Integración con Telegram
+## Integración con Telegram
 
 ### Objetivo
 
@@ -945,13 +945,13 @@ Enviar **notificaciones automáticas** a administradores por Telegram ante event
 
 ## Registro de Actividad
 
-### 🎯 Propósito
+### Propósito
 
 Proporcionar una **traza de auditoría** de todas las acciones administrativas realizadas por usuarios autenticados, ya sea en servidores locales o remotos.
 
 ---
 
-### 📋 Qué se Registra
+### Qué se Registra
 
 - Comandos ejecutados
 - Gestión de usuarios
@@ -966,7 +966,7 @@ Cada entrada incluye:
 
 ---
 
-### 🛠 Implementación Técnica
+### Implementación Técnica
 
 #### Archivo de Log
 
@@ -988,7 +988,7 @@ function log_actividad($usuario, $accion) {
 
 ---
 
-### 📁 Formato de Registro
+### Formato de Registro
 
 ```
 [2025-06-02 14:45:01] Usuario: admin | Acción: hacer_backup
@@ -996,7 +996,7 @@ function log_actividad($usuario, $accion) {
 
 ---
 
-### 🔎 Visualización de Registros
+### Visualización de Registros
 
 #### 1\. Desde el Dashboard
 
@@ -1013,7 +1013,7 @@ function log_actividad($usuario, $accion) {
 
 ---
 
-### 🛡️ Seguridad y Control de Acceso
+### Seguridad y Control de Acceso
 
 | Método de acceso | Requiere rol | Verificación |
 | --- | --- | --- |
@@ -1027,7 +1027,7 @@ Medidas adicionales:
 - Tolerancia a errores de escritura
 - Auditoría incluso de intentos fallidos
 
-### 🔄 Integración Estratégica
+### Integración Estratégica
 
 El registro se ejecuta:
 
@@ -1038,7 +1038,7 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 
 ## Diseño de la Interfaz de Usuario
 
-### 🧱 Arquitectura General
+### Arquitectura General
 
 - Tipo SPA (Single Page Application)
 - Diseño por **secciones tipo acordeón** agrupadas por categoría
@@ -1047,7 +1047,7 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 
 ---
 
-## 🧩 Componentes del Dashboard
+## Componentes del Dashboard
 
 ### Cabecera de Estado
 
@@ -1065,7 +1065,7 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 
 ---
 
-## 💡 Interactividad y Formularios
+## Interactividad y Formularios
 
 ### JavaScript del Acordeón
 
@@ -1090,7 +1090,7 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 
 ---
 
-## 🎨 Estilos y Temas
+## Estilos y Temas
 
 ### Tema Oscuro (Material Design inspirado)
 
@@ -1108,7 +1108,7 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 
 ---
 
-## 🔐 Interfaz de Login
+## Interfaz de Login
 
 - Diseño centrado tipo **modal**
 - Fondo degradado, estructura minimalista
@@ -1119,7 +1119,7 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 
 ---
 
-## ♿ Accesibilidad
+## Accesibilidad
 
 - Uso extensivo de atributos ARIA:
 	- `aria-expanded`, `aria-controls`, `aria-labelledby`, `role="region"`
