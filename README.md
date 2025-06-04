@@ -1,41 +1,83 @@
 # Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
 
 ## Índice
-# Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
 
-- [introducción general](#1-introducción-general)  
-  - [objetivo del proyecto](#objetivo-del-proyecto)  
-  - [características principales](#características-principales)  
-  - [medios utilizados](#Medios-Utilizados)  
+- [introducción general](#1-introducción-general)
+  - [objetivo del proyecto](#objetivo-del-proyecto)
+  - [características principales](#características-principales)
+  - [medios utilizados](#medios-utilizados)
   - [público objetivo](#público-objetivo)
 
-- [arquitectura del sistema](#arquitectura-central)  
-  - [visión general en tres capas](#visión-general)  
-  - [descripción del controlador central accionesphp](#componentes-clave)  
-  - [ejecución local vs remota](#gestión-de-estado)
+- [arquitectura central](#arquitectura-central)
+  - [visión general](#visión-general)
+  - [componentes clave](#componentes-clave)
+  - [conexiones remotas](#conexiones-remotas)
+  - [organización de archivos](#organización-de-archivos)
+  - [gestión de estado](#gestión-de-estado)
 
-- [estructura del proyecto](#organización-de-archivos)
+- [interfaz del panel](#interfaz-del-panel)
+  - [estructura general](#estructura-general)
+  - [componentes principales](#componentes-principales)
+  - [secciones del acordeón](#secciones-del-acordeón)
+  - [renderizado según permisos](#renderizado-según-permisos)
+  - [integración con servidores remotos](#integración-con-servidores-remotos)
+  - [flujo de acciones y formularios](#flujo-de-acciones-y-formularios)
+  - [categorías de acciones](#categorías-de-acciones)
 
-- [interfaz de usuario](#interfaz-del-panel)  
-  - [diseño spa con secciones tipo acordeón](#estructura-general)  
-  - [cabecera de estado e interacción](#componentes-principales)  
-  - [formularios y retroalimentación visual](#flujo-de-acciones-y-formularios)
+- [controlador de acciones](#controlador-de-acciones)
+  - [rol principal](#rol-principal)
+  - [arquitectura interna](#arquitectura-interna)
+  - [sistema de ejecución de comandos](#sistema-de-ejecución-de-comandos)
+  - [gestión de servidores remotos](#gestión-de-servidores-remotos)
+  - [canal de procesamiento de acciones](#canal-de-procesamiento-de-acciones)
+  - [seguridad y validación](#seguridad-y-validación)
+  - [registro de actividad](#registro-de-actividad)
+  - [patrones de comando](#patrones-de-comando)
 
-- [categorías funcionales del panel](#categorías-de-acciones)
+- [gestión de servidores remotos](#gestión-de-servidores-remotos-1)
 
-- [gestión de usuarios y roles](#gestión-de-usuarios)
+- [sistema de despliegue de scripts](#sistema-de-despliegue-de-scripts)
 
-- [ejecución de comandos](#sistema-de-ejecución-de-comandos)
+- [autenticación y autorización – resumen](#autenticación-y-autorización--resumen)
 
-- [sistemas de logs y auditoría](#registro-de-actividad)
+- [inicio de sesión](#inicio-de-sesión)
 
-- [monitorización en tiempo real](#monitorización-del-sistema-tiempo-real)
+- [control de acceso basado en roles (rbac)](#control-de-acceso-basado-en-roles-rbac)
+
+- [arquitectura de permisos (rbac)](#arquitectura-de-permisos-rbac)
+
+- [gestión de usuarios](#gestión-de-usuarios)
+  - [persistencia de datos de usuarios](#persistencia-de-datos-de-usuarios)
+  - [interfaz de gestión de usuarios](#interfaz-de-gestión-de-usuarios)
+  - [seguridad en gestión de usuarios](#seguridad-en-gestión-de-usuarios)
+
+- [funcionalidades del sistema](#funcionalidades-del-sistema)
+  - [acciones administrativas](#acciones-administrativas)
+  - [funciones de seguridad y control de acceso](#funciones-de-seguridad-y-control-de-acceso)
+
+- [gestión de backups y datos](#gestión-de-backups-y-datos)
+
+- [acceso a logs del sistema](#acceso-a-logs-del-sistema)
+
+- [despliegue remoto de scripts](#despliegue-remoto-de-scripts)
+
+- [monitorización del sistema (tiempo real)](#monitorización-del-sistema-tiempo-real)
+
+- [sistema de visualización en tiempo real](#sistema-de-visualización-en-tiempo-real)
 
 - [integración con telegram](#integración-con-telegram)
 
-- [estilo visual y accesibilidad](#estilos-y-temas)
+- [registro de actividad](#registro-de-actividad-1)
 
-- [seguridad general del sistema](#seguridad-en-gestión-de-usuarios)
+- [diseño de la interfaz de usuario](#diseño-de-la-interfaz-de-usuario)
+  - [componentes del dashboard](#componentes-del-dashboard)
+  - [interactividad y formularios](#interactividad-y-formularios)
+
+- [estilos y temas](#estilos-y-temas)
+
+- [interfaz de login](#interfaz-de-login)
+
+- [accesibilidad](#accesibilidad)
 
 
 
