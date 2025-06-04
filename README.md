@@ -1,39 +1,40 @@
 # Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
 ## Índice
 
-- [Introducción General](#1-introducción-general)  
-  - [Objetivo del proyecto](#objetivo-del-proyecto)  
-  - [Características principales](#características-principales)  
-  - [Medios Utilizados](#medios-utilizados)  
-  - [Público objetivo](#público-objetivo)
+- [introducción general](#introducción-general)  
+  - [objetivo del proyecto](#objetivo-del-proyecto)  
+  - [características principales](#características-principales)  
+  - [medios utilizados](#medios-utilizados)  
+  - [público objetivo](#público-objetivo)
 
-- [Arquitectura del Sistema](#arquitectura-central)  
-  - [Visión general en tres capas](#visión-general)  
-  - [Descripción del controlador central accionesphp](#componentes-clave)  
-  - [Ejecución local vs remota](#gestión-de-estado)
+- [arquitectura del sistema](#arquitectura-central)  
+  - [visión general en tres capas](#visión-general)  
+  - [descripción del controlador central accionesphp](#componentes-clave)  
+  - [ejecución local vs remota](#gestión-de-estado)
 
-- [Estructura del Proyecto](#organización-de-archivos)
+- [estructura del proyecto](#organización-de-archivos)
 
-- [Interfaz de Usuario](#interfaz-del-panel)  
-  - [Diseño SPA con secciones tipo acordeón](#estructura-general)  
-  - [Cabecera de estado e interacción](#componentes-principales)  
-  - [Formularios y retroalimentación visual](#flujo-de-acciones-y-formularios)
+- [interfaz de usuario](#interfaz-del-panel)  
+  - [diseño spa con secciones tipo acordeón](#estructura-general)  
+  - [cabecera de estado e interacción](#componentes-principales)  
+  - [formularios y retroalimentación visual](#flujo-de-acciones-y-formularios)
 
-- [Categorías Funcionales del Panel](#categorías-de-acciones)
+- [categorías funcionales del panel](#categorías-de-acciones)
 
-- [Gestión de Usuarios y Roles](#gestión-de-usuarios)
+- [gestión de usuarios y roles](#gestión-de-usuarios)
 
-- [Ejecución de Comandos](#sistema-de-ejecución-de-comandos)
+- [ejecución de comandos](#sistema-de-ejecución-de-comandos)
 
-- [Sistemas de Logs y Auditoría](#registro-de-actividad)
+- [sistemas de logs y auditoría](#registro-de-actividad)
 
-- [Monitorización en Tiempo Real](#monitorización-del-sistema-tiempo-real)
+- [monitorización en tiempo real](#monitorización-del-sistema-tiempo-real)
 
-- [Integración con Telegram](#integración-con-telegram)
+- [integración con telegram](#integración-con-telegram)
 
-- [Estilo Visual y Accesibilidad](#estilos-y-temas)
+- [estilo visual y accesibilidad](#estilos-y-temas)
 
-- [Seguridad General del Sistema](#seguridad-en-gestión-de-usuarios)
+- [seguridad general del sistema](#seguridad-en-gestión-de-usuarios)
+
 
 
 ## 1. 🧭 Introducción General
