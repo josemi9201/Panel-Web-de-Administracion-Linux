@@ -6,7 +6,7 @@
 - [introducción general](#1-introducción-general)  
   - [objetivo del proyecto](#objetivo-del-proyecto)  
   - [características principales](#características-principales)  
-  - [medios utilizados](#medios-utilizados)  
+  - [medios utilizados](#Medios-Utilizados)  
   - [público objetivo](#público-objetivo)
 
 - [arquitectura del sistema](#arquitectura-central)  
