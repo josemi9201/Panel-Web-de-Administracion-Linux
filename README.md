@@ -2,42 +2,39 @@
 
 ## Índice
 
-- [Introducción General](#1-🧭-introducción-general)  
-  - [Objetivo del proyecto](#🎯-objetivo-del-proyecto)  
-  - [Características principales](#✨-características-principales)  
-  - [Medios Utilizados](#🛠️-medios-utilizados)  
-  - [Público objetivo](#👥-público-objetivo)
+- [Introducción General](#1-introducción-general)  
+  - [Objetivo del proyecto](#objetivo-del-proyecto)  
+  - [Características principales](#características-principales)  
+  - [Medios Utilizados](#medios-utilizados)  
+  - [Público objetivo](#público-objetivo)
 
 - [Arquitectura del Sistema](#arquitectura-central)  
-  - [Visión general en tres capas](#✅-visión-general)  
-  - [Descripción del controlador central (`acciones.php`)](#⚙️-componentes-clave)  
-  - [Ejecución local vs remota](#🔄-gestión-de-estado)
+  - [Visión general en tres capas](#visión-general)  
+  - [Descripción del controlador central accionesphp](#componentes-clave)  
+  - [Ejecución local vs remota](#gestión-de-estado)
 
-- [Estructura del Proyecto](#📁-organización-de-archivos)  
-  - [Archivos principales y su función](#📁-organización-de-archivos)  
-  - [Organización por carpetas](#📁-organización-de-archivos)  
-  - [Variables de sesión utilizadas](#📁-organización-de-archivos)
+- [Estructura del Proyecto](#organización-de-archivos)
 
-- [Interfaz de Usuario](#🖥️-interfaz-del-panel)  
-  - [Diseño SPA con secciones tipo acordeón](#🧩-estructura-general)  
-  - [Cabecera de estado e interacción](#🧱-componentes-principales)  
-  - [Formularios y retroalimentación visual](#🔁-flujo-de-acciones-y-formularios)
+- [Interfaz de Usuario](#interfaz-del-panel--resumen)  
+  - [Diseño SPA con secciones tipo acordeón](#estructura-general)  
+  - [Cabecera de estado e interacción](#componentes-principales)  
+  - [Formularios y retroalimentación visual](#flujo-de-acciones-y-formularios)
 
-- [Categorías Funcionales del Panel](#📂-categorías-de-acciones)
+- [Categorías Funcionales del Panel](#categorías-de-acciones)
 
-- [Gestión de Usuarios y Roles](#👤-gestión-de-usuarios)
+- [Gestión de Usuarios y Roles](#gestión-de-usuarios)
 
-- [Ejecución de Comandos](#🚀-sistema-de-ejecución-de-comandos)
+- [Ejecución de Comandos](#sistema-de-ejecución-de-comandos)
 
-- [Sistemas de Logs y Auditoría](#📜-acceso-a-logs-del-sistema)
+- [Sistemas de Logs y Auditoría](#registro-de-actividad)
 
-- [Monitorización en Tiempo Real](#📊-monitorización-del-sistema-tiempo-real)
+- [Monitorización en Tiempo Real](#monitorización-del-sistema-tiempo-real)
 
-- [Integración con Telegram](#📲-integración-con-telegram)
+- [Integración con Telegram](#integración-con-telegram)
 
-- [Estilo Visual y Accesibilidad](#🎨-estilos-y-temas)
+- [Estilo Visual y Accesibilidad](#estilos-y-temas)
 
-- [Seguridad General del Sistema](#🔐-seguridad-en-gestión-de-usuarios)
+- [Seguridad General del Sistema](#seguridad-en-gestión-de-usuarios)
 
 
 ## 1. 🧭 Introducción General
