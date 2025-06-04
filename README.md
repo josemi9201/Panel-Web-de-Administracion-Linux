@@ -1,10 +1,12 @@
+# Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
 
 ## Índice
+# Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
 
 - [introducción general](#1-introducción-general)  
   - [objetivo del proyecto](#objetivo-del-proyecto)  
   - [características principales](#características-principales)  
-  - [medios utilizados](#medios-utilizados)  
+  - [medios utilizados](#Medios-Utilizados)  
   - [público objetivo](#público-objetivo)
 
 - [arquitectura del sistema](#arquitectura-central)  
@@ -35,7 +37,70 @@
 
 - [seguridad general del sistema](#seguridad-en-gestión-de-usuarios)
 
----
+
+
+## 1. Introducción General
+
+El **Panel de Administración de Servidores Linux** es una aplicación web desarrollada en PHP, diseñada para simplificar la gestión de servidores tanto locales como remotos desde una única interfaz centralizada. Este sistema permite a los administradores ejecutar acciones comunes de mantenimiento, seguridad, supervisión y configuración sin necesidad de acceder manualmente por terminal a cada máquina.
+
+### Objetivo del Proyecto
+
+El propósito principal del panel es ofrecer una **herramienta visual, segura y extensible** que permita:
+
+- **Administrar múltiples servidores** desde un único punto.
+    
+- Ejecutar comandos local o remotamente mediante SSH.
+    
+- Controlar el acceso a funciones según el **rol del usuario**.
+    
+- Visualizar en tiempo real el estado del sistema (CPU, RAM, disco).
+    
+- Facilitar tareas críticas como backups, configuración de firewall, diagnóstico de red, gestión de usuarios y más.
+
+
+### Características Principales
+
+- Aplicación tipo **SPA** (Single Page Application) con diseño en **acordeones plegables** por categoría.
+    
+- **Ejecución unificada** de acciones locales o remotas según la sesión activa.
+    
+- **Control de acceso basado en roles (RBAC)** configurable dinámicamente.
+    
+- **Autenticación segura** con contraseñas cifradas en bcrypt.
+    
+- **Registro de actividad** con auditoría detallada en cada acción.
+    
+- **Alertas automáticas por Telegram** ante eventos clave como inicios de sesión.
+
+### 🛠️ Medios Utilizados
+
+Para el desarrollo y despliegue de este proyecto se han utilizado los siguientes recursos y herramientas:
+
+-  **Servidor principal (droplet)**: Alojado en **DigitalOcean**, donde se encuentra instalado el panel y se gestionan tanto los servicios como los archivos de configuración y ejecución.
+-  **Servidores gestionados**: También desplegados en DigitalOcean y configurados para conexión vía SSH desde el panel.
+-  **Software base**:
+	- Sistema operativo: Debian/Ubuntu
+	- Servidor web: Apache2
+	- PHP 8.x con módulos comunes
+	- `sshpass`, `ufw`, `fail2ban`, `cron`, `scp`, `top`, `df`, `free`, etc.
+-  **Telegram Bot** para notificaciones de eventos críticos (logins).
+-  **Almacenamiento remoto** para backups y scripts mediante `scp`.
+-  **Frontend responsivo** con HTML, CSS y JavaScript puro (sin frameworks).
+-  **Chart.js** para monitorización visual de recursos en tiempo real.
+
+###  Público Objetivo
+
+Este panel está pensado especialmente para:
+
+- Administradores de sistemas que gestionan múltiples servidores Linux.
+    
+- Entornos educativos donde se enseña administración remota.
+    
+- Proyectos de automatización, monitorización y mantenimiento de sistemas.
+    
+- Usuarios que deseen una solución centralizada sin depender del terminal.
+
+
 
 ## Arquitectura Central
 
@@ -49,7 +114,7 @@ El **Panel de Administración de Servidores Linux** es una app web PHP organizad
 
 Se utiliza un controlador central (`acciones.php`) para manejar todas las acciones, con funciones unificadas como `ejecutar()` para decidir si ejecutar comandos localmente o por SSH.
 
----
+![Arquitectura del sistema](capturas/diagrama_1.png)
 
 ### Componentes Clave
 
@@ -77,8 +142,8 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
   }
 }
 ```
-
 ---
+
 
 ### Organización de Archivos
 
@@ -100,11 +165,13 @@ Se utiliza un controlador central (`acciones.php`) para manejar todas las accion
 - La ejecución depende de si `$_SESSION['remoto']` está activo → local o remoto
 
 ---
-## Interfaz del Panel – Resumen
+## Interfaz del Panel
 
 ### Estructura General
 
 La interfaz es una aplicación de una sola página (SPA) con secciones en **acordeón colapsable** que agrupan las funciones por categorías. Su contenido se **renderiza dinámicamente según el rol del usuario** y si hay conexión remota activa.
+
+![Interfaz del panel](capturas/captura_1.png)
 
 ---
 
@@ -129,6 +196,8 @@ La interfaz es una aplicación de una sola página (SPA) con secciones en **acor
 | Seguridad | `seguridad` | 245–266 | Revisar intentos fallidos, sesiones |
 | Gestión de Usuarios | `usuarios` | 268–310 | Alta, baja y modificación de usuarios |
 | Firewall | `firewall` | 312–359 | Estado y reglas de UFW |
+
+![Ejemplo acordeones de la interfaz abiertos](capturas/captura_2.png)
 
 ---
 
@@ -155,6 +224,8 @@ Esto permite una interfaz dinámica y segura basada en permisos.
 ### Flujo de Acciones y Formularios
 
 Los formularios del panel se dirigen a `acciones.php` mediante `POST` (principalmente), usando parámetros como `name="accion" value="nombre_accion"`.
+
+![diagrama flujo de acciones](capturas/diagrama2.png)
 
 #### Tipos de Formularios
 
@@ -298,6 +369,8 @@ Guardado en `logs/panel.log`, con creación automática del directorio si no exi
 
 El sistema permite a los administradores gestionar **múltiples servidores Linux** (locales o remotos) desde una **interfaz web centralizada**, sin necesidad de modificar el código para cambiar entre ejecución local y remota.
 
+![Interfaz conexión remota](capturas/remoto.png)
+
 ---
 
 ### Arquitectura General
@@ -369,6 +442,8 @@ La función `ejecutar()` encapsula:
 
 Permitir que los scripts administrativos esenciales del panel estén disponibles también en los **servidores remotos**, copiándolos automáticamente desde el servidor local.
 
+![Interfaz subida de scripts a servidores remotos](capturas/script_remoto.png)
+
 ### Scripts desplegados
 
 Los scripts se suben al directorio remoto: `/usr/local/bin/`.
@@ -427,6 +502,8 @@ Cada script se despliega mediante:
 	- Se crean variables de sesión (`$_SESSION`)
 	- Se envía alerta por **Telegram**
 	- Se redirige al panel (`dashboard.php`)
+
+![Diagrama flujo de login](capturas/diagrama3.png)
 
 ---
 
@@ -617,11 +694,11 @@ $usuarios_validos = [...]; // Estructura generada con var_export
 
 Tres zonas funcionales en `gestionar_usuarios.php`:
 
-| Componente | Función |
-| --- | --- |
-| Formulario de alta | Crear nuevos usuarios con rol asignado |
-| Tabla de usuarios | Visualización y opciones de gestión |
-| Cambio de contraseña | Formularios en línea por usuario |
+| Componente           | Función                                |
+| -------------------- | -------------------------------------- |
+| Formulario de alta   | Crear nuevos usuarios con rol asignado |
+| Tabla de usuarios    | Visualización y opciones de gestión    |
+| Cambio de contraseña | Formularios en línea por usuario       |
 
 **Características clave:**
 
@@ -631,6 +708,7 @@ Tres zonas funcionales en `gestionar_usuarios.php`:
 - Confirmaciones de eliminación (JS)
 - Escapado con `htmlspecialchars()` (XSS)
 
+![Interfaz usuarios](capturas/usuarios.png)
 ---
 
 ## Seguridad en Gestión de Usuarios
@@ -745,7 +823,7 @@ Permite ver logs del sistema desde la interfaz web:
 
 ## Despliegue Remoto de Scripts
 
-### Qué hace?
+### ¿Qué hace?
 
 - Copia scripts `.sh` al directorio `/usr/local/bin/` en servidores remotos.
 
@@ -795,6 +873,8 @@ Permite ver logs del sistema desde la interfaz web:
 ### Objetivo
 
 Mostrar en tiempo real el uso de **CPU, RAM y disco** mediante gráficos interactivos.
+
+![Sistema de visualizacion en tiempo real](capturas/graficos.png)
 
 ### Implementación
 
@@ -931,6 +1011,8 @@ function log_actividad($usuario, $accion) {
 - Interfaz con scroll y diseño dedicado
 - Solo accesible por usuarios con rol `admin`
 
+![Interfaz del log de acciones registradas](capturas/visor_logs.png)
+
 ---
 
 ### Seguridad y Control de Acceso
@@ -1034,6 +1116,8 @@ Esto garantiza que **todas las acciones intentadas**, incluso las no autorizadas
 - Fondo degradado, estructura minimalista
 - Mensajes de error visualmente destacados (`background: #b00020`, `padding`, `border-radius`)
 - Adaptado a móviles y pantallas pequeñas
+
+![Interfaz login del panel](capturas/login.png)
 
 ---
 
