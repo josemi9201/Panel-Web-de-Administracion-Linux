@@ -1,5 +1,4 @@
 # Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
-
 ## Índice
 
 - [Introducción General](#1-introducción-general)  
