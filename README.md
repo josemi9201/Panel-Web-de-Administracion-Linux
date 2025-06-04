@@ -1,7 +1,9 @@
 # Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
-## Índice
 
-- [introducción general](#introducción-general)  
+## Índice
+# Documentación del Proyecto: Panel de Administración con Gestión de Conexión Remota
+
+- [introducción general](#1-introducción-general)  
   - [objetivo del proyecto](#objetivo-del-proyecto)  
   - [características principales](#características-principales)  
   - [medios utilizados](#medios-utilizados)  
