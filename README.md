@@ -14,7 +14,7 @@
 
 - [Estructura del Proyecto](#organización-de-archivos)
 
-- [Interfaz de Usuario](#interfaz-del-panel--resumen)  
+- [Interfaz de Usuario](#interfaz-del-panel)  
   - [Diseño SPA con secciones tipo acordeón](#estructura-general)  
   - [Cabecera de estado e interacción](#componentes-principales)  
   - [Formularios y retroalimentación visual](#flujo-de-acciones-y-formularios)
