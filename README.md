@@ -2,115 +2,43 @@
 
 ## Índice
 
-- **Introducción General**
-    
-    - Objetivo del proyecto
-        
-    - Características principales
-	      
-    - Medios Utilizados
-        
-    - Público objetivo
-    
-- **Arquitectura del Sistema**
-    
-    - Visión general en tres capas
-        
-    - Descripción del controlador central (`acciones.php`)
-        
-    - Ejecución local vs remota
-    
-- **Estructura del Proyecto**
-    
-    - Archivos principales y su función
-        
-    - Organización por carpetas (`inc/`, `templates/`, `logs/`, etc.)
-        
-    - Variables de sesión utilizadas
-    
-- **Interfaz de Usuario**
-    
-    - Diseño SPA con secciones tipo acordeón
-        
-    - Cabecera de estado e interacción
-        
-    - Formularios y retroalimentación visual
-    
-- **Categorías Funcionales del Panel**
-    
-    - Mantenimiento del sistema
-        
-    - Backups
-        
-    - Gestión de usuarios
-        
-    - Seguridad y firewall (UFW)
-        
-    - Conexiones remotas SSH
-        
-    - Diagnóstico de red
-        
-    - Scripts remotos
-        
-    - Monitorización gráfica
-    
-- **Gestión de Usuarios y Roles**
-    
-    - Autenticación con bcrypt y sesiones
-        
-    - Control de acceso basado en roles (RBAC)
-        
-    - Creación, modificación y eliminación de usuarios
-        
-    - Seguridad en la gestión de roles (`roles.php`)
-    
-- **Ejecución de Comandos**
-    
-    - Flujo de ejecución: local y remoto
-        
-    - Funciones clave: `ejecutar()`, `ejecutar_local()`, `ejecutar_remoto()`
-        
-    - Seguridad en ejecución y validación de acciones
-    
-- **Sistemas de Logs y auditorias**
+- [Introducción General](#1-🧭-introducción-general)  
+  - [Objetivo del proyecto](#🎯-objetivo-del-proyecto)  
+  - [Características principales](#✨-características-principales)  
+  - [Medios Utilizados](#🛠️-medios-utilizados)  
+  - [Público objetivo](#👥-público-objetivo)
 
-    - Registro de actividad (`log_actividad`)
-        
-    - Formato y almacenamiento de logs
-        
-    - Acceso a los registros desde el panel
-    
-- **Monitorización en Tiempo Real**
-    
-    - Arquitectura de monitorización
-        
-    - Gráficos interactivos con Chart.js
-        
-    - Métricas recolectadas (CPU, RAM, disco)
-        
-- **Integración con Telegram**
-    
-    - Notificaciones de login
-        
-    - Configuración del bot (`inc/config.php`)
-        
-    - Flujo de notificación automática
-    
-- **Estilo Visual y Accesibilidad**
-    
-    - Tema oscuro y diseño responsive
-        
-    - Accesibilidad (atributos ARIA, navegación por teclado)
-        
-    - Interfaz adaptada a diferentes perfiles
-    
-- **Seguridad General del Sistema**
-    
-    - Validaciones, escapes y protección XSS
-        
-    - Bloqueo de archivos, control de caché y restricciones por sesión
-        
-    - Gestión segura de credenciales y comandos
+- [Arquitectura del Sistema](#arquitectura-central)  
+  - [Visión general en tres capas](#✅-visión-general)  
+  - [Descripción del controlador central (`acciones.php`)](#⚙️-componentes-clave)  
+  - [Ejecución local vs remota](#🔄-gestión-de-estado)
+
+- [Estructura del Proyecto](#📁-organización-de-archivos)  
+  - [Archivos principales y su función](#📁-organización-de-archivos)  
+  - [Organización por carpetas](#📁-organización-de-archivos)  
+  - [Variables de sesión utilizadas](#📁-organización-de-archivos)
+
+- [Interfaz de Usuario](#🖥️-interfaz-del-panel)  
+  - [Diseño SPA con secciones tipo acordeón](#🧩-estructura-general)  
+  - [Cabecera de estado e interacción](#🧱-componentes-principales)  
+  - [Formularios y retroalimentación visual](#🔁-flujo-de-acciones-y-formularios)
+
+- [Categorías Funcionales del Panel](#📂-categorías-de-acciones)
+
+- [Gestión de Usuarios y Roles](#👤-gestión-de-usuarios)
+
+- [Ejecución de Comandos](#🚀-sistema-de-ejecución-de-comandos)
+
+- [Sistemas de Logs y Auditoría](#📜-acceso-a-logs-del-sistema)
+
+- [Monitorización en Tiempo Real](#📊-monitorización-del-sistema-tiempo-real)
+
+- [Integración con Telegram](#📲-integración-con-telegram)
+
+- [Estilo Visual y Accesibilidad](#🎨-estilos-y-temas)
+
+- [Seguridad General del Sistema](#🔐-seguridad-en-gestión-de-usuarios)
+
 
 ## 1. 🧭 Introducción General
 
