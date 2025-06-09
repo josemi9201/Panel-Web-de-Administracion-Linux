@@ -114,7 +114,7 @@ El propósito principal del panel es ofrecer una **herramienta visual, segura y 
     
 - **Alertas automáticas por Telegram** ante eventos clave como inicios de sesión.
 
-### 🛠️ Medios Utilizados
+### Medios Utilizados
 
 Para el desarrollo y despliegue de este proyecto se han utilizado los siguientes recursos y herramientas:
 
